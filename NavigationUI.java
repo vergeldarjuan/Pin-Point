@@ -34,7 +34,7 @@ public class NavigationUI extends JFrame {
         // updateFloorSpinner();
         populateComboBoxes();
 
-        setTitle("PUP Main Building Navigation System");
+        setTitle("PinPoint - PUP Main Building Navigation System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLocationRelativeTo(null);
@@ -378,10 +378,10 @@ public class NavigationUI extends JFrame {
 
     private void showWelcomeDialog() {
         JOptionPane.showMessageDialog(this,
-                "Welcome to PUP Indoor Navigation System!\n\n" +
+                "Welcome to PinPoint - PUP Main Building Navigation System!\n\n" +
                         "Select your start and end points, choose an algorithm,\n" +
                         "and find your optimal path with accessibility options.",
-                "Welcome", JOptionPane.INFORMATION_MESSAGE);
+                "PinPoint", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void showAboutDialog() {
