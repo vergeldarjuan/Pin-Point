@@ -276,7 +276,7 @@ public class NavigationUI extends JFrame {
             AStar.PathResult result = findSinglePath(start, end, algo, accessible);
             if (result != null) {
                 displayPathResult(result, algo);
-                // mapPanel.drawPath(result.getPath());
+                mapPanel.drawPath((Graphics2D) result.getPath());
                 updateStatus("Path found using " + algo);
             } else {
                 updateStatus("No path found");
@@ -289,11 +289,10 @@ public class NavigationUI extends JFrame {
         if ("A* Algorithm".equals(algorithm)) {
             return aStar.findPath(start, end, accessible);
         } else if ("Dijkstra's Algorithm".equals(algorithm)) {
-            // Option 1: If Dijkstra.PathResult is compatible with AStar.PathResult, cast
-            // it:
-            // return (AStar.PathResult) dijkstra.findPath(start, end, accessible);
-
-            // Option 2: If not compatible, return null and handle Dijkstra separately
+            Dijkstra.PathResult result = dijkstra.findPath(start, end, accessible);
+            // Convert Dijkstra.PathResult to AStar.PathResult if needed, or adjust method
+            // signature to accept both
+            // For now, return null as types are incompatible
             return null;
         } else {
             return null;
@@ -335,10 +334,10 @@ public class NavigationUI extends JFrame {
         performanceArea.setText(sb.toString());
 
         if (aStarResult != null) {
-            // mapPanel.drawPath(aStarResult.getPath());
+            mapPanel.drawPath((Graphics2D) aStarResult.getPath());
             displayDirections(aStarResult.getDirections());
         } else if (dijkstraResult != null) {
-            // mapPanel.drawPath(dijkstraResult.getPath());
+            mapPanel.drawPath((Graphics2D) dijkstraResult.getPath());
             displayDirections(dijkstraResult.getDirections());
         } else {
             mapPanel.clearPath();
@@ -389,15 +388,5 @@ public class NavigationUI extends JFrame {
         JOptionPane.showMessageDialog(this,
                 "PUP Main Building Navigation System\nVersion 1.0\n\nDeveloped for Polytechnic University of the Philippines\nAlgorithms: A* and Dijkstra's\n© PinPoint",
                 "About", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {
-            }
-            new NavigationUI().setVisible(true);
-        });
     }
 }

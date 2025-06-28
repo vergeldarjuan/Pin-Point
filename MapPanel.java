@@ -41,7 +41,7 @@ public class MapPanel extends JPanel {
 
     public MapPanel(Graph graph) {
         this.graph = graph;
-        this.currentFloor = 0;
+        this.currentFloor = 1; // Changed from 0 to 1 to match UI
         this.currentPath = new ArrayList<>();
 
         setBackground(BACKGROUND_COLOR);
@@ -246,13 +246,12 @@ public class MapPanel extends JPanel {
         }
     }
 
-    private void drawPath(Graphics2D g2d) {
+    public void drawPath(Graphics2D g2d) {
         if (currentPath.size() < 2)
             return;
 
-        ((Graphics) g2d).setColor(PATH_COLOR);
-        Graphics2D list = null;
-        list.setStroke(new BasicStroke(4.0f));
+        g2d.setColor(PATH_COLOR);
+        g2d.setStroke(new BasicStroke(4.0f));
 
         for (int i = 0; i < currentPath.size() - 1; i++) {
             Node current = currentPath.get(i);
@@ -260,11 +259,11 @@ public class MapPanel extends JPanel {
 
             // Only draw path segments on current floor
             if (current.getFloor() == currentFloor && next.getFloor() == currentFloor) {
-                ((Graphics) g2d).drawLine((int) current.getX(), (int) current.getY(),
+                g2d.drawLine((int) current.getX(), (int) current.getY(),
                         (int) next.getX(), (int) next.getY());
 
                 // Draw arrow to show direction
-                drawArrow(list, current, next);
+                drawArrow(g2d, current, next);
             }
         }
     }
@@ -373,7 +372,7 @@ public class MapPanel extends JPanel {
     }
 
     public void setCurrentPath(List<Node> path) {
-        this.currentPath = path;
+        this.currentPath = path != null ? new ArrayList<>(path) : new ArrayList<>();
         repaint();
     }
 
@@ -428,6 +427,26 @@ public class MapPanel extends JPanel {
         }
     }
 
+    // Fixed implementation of fitToFloor
+    public void fitToFloor(int floor) {
+        setCurrentFloor(floor);
+        fitToContent();
+    }
+
+    // Fixed implementation of zoomIn
+    public void zoomIn() {
+        zoomFactor *= 1.2;
+        zoomFactor = Math.min(5.0, zoomFactor);
+        repaint();
+    }
+
+    // Fixed implementation of zoomOut
+    public void zoomOut() {
+        zoomFactor /= 1.2;
+        zoomFactor = Math.max(0.1, zoomFactor);
+        repaint();
+    }
+
     // Getters
     public Node getSelectedStartNode() {
         return selectedStartNode;
@@ -454,20 +473,5 @@ public class MapPanel extends JPanel {
     public void setSelectedEndNode(Node node) {
         selectedEndNode = node;
         repaint();
-    }
-
-    public void fitToFloor(int floor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'fitToFloor'");
-    }
-
-    public Object zoomIn() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'zoomIn'");
-    }
-
-    public Object zoomOut() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'zoomOut'");
     }
 }

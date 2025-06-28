@@ -1,6 +1,14 @@
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 public class Main {
     public static void main(String[] args) {
-        NavigationUI navigationUI = new NavigationUI();
-        System.out.println("Navigation UI initialized.");
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {
+            }
+            new NavigationUI().setVisible(true);
+        });
     }
 }
