@@ -31,7 +31,7 @@ public class NavigationUI extends JFrame {
         setupEventHandlers();
         setupMenuBar();
 
-        // updateFloorSpinner();
+        updateFloorSpinner();
         populateComboBoxes();
 
         setTitle("PinPoint - PUP Main Building Navigation System");
@@ -40,6 +40,12 @@ public class NavigationUI extends JFrame {
         setLocationRelativeTo(null);
 
         showWelcomeDialog();
+    }
+
+    private void updateFloorSpinner() {
+        int maxFloor = graph.getMaxFloor();
+        floorSpinner.setModel(new SpinnerNumberModel(1, 1, maxFloor, 1));
+        floorSpinner.setValue(1);
     }
 
     private void initializeComponents() {
@@ -157,7 +163,7 @@ public class NavigationUI extends JFrame {
         return panel;
     }
 
-    private JPanel createRightPanel() {
+    public JPanel createRightPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(300, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -171,7 +177,7 @@ public class NavigationUI extends JFrame {
         return panel;
     }
 
-    private void setupEventHandlers() {
+    public void setupEventHandlers() {
         findPathButton.addActionListener(e -> findPath());
         clearPathButton.addActionListener(e -> clearPath());
         resetViewButton.addActionListener(e -> {

@@ -221,11 +221,14 @@ public class MapPanel extends JPanel {
         g2d.drawString(floorText, 10, 25);
 
         // Instructions
-        g2d.setFont(new Font("Arial", Font.PLAIN, 12));
-        g2d.drawString("Left click: Select start | Ctrl+Left click: Select end", 10, getHeight() - 40);
-        g2d.drawString("Mouse wheel: Zoom | Drag: Pan", 10, getHeight() - 25);
-        g2d.drawString("Selected: Start=" + (selectedStartNode != null ? selectedStartNode.getName() : "None") +
-                ", End=" + (selectedEndNode != null ? selectedEndNode.getName() : "None"), 10, getHeight() - 10);
+        // g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+        // g2d.drawString("Left click: Select start | Ctrl+Left click: Select end", 10,
+        // getHeight() - 40);
+        // g2d.drawString("Mouse wheel: Zoom | Drag: Pan", 10, getHeight() - 25);
+        // g2d.drawString("Selected: Start=" + (selectedStartNode != null ?
+        // selectedStartNode.getName() : "None") +
+        // ", End=" + (selectedEndNode != null ? selectedEndNode.getName() : "None"),
+        // 10, getHeight() - 10);
 
         g2d.setTransform(oldTransform);
     }
