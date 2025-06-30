@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MobileAppInterface extends JFrame {
-    private JLabel statusLabel;
     private JPanel contentPanel;
     private JPanel bottomNavPanel;
 
     public MobileAppInterface() {
         setupFrame();
-        // createStatusBar();
         createContentArea();
         createBottomNavigation();
 
@@ -20,7 +18,7 @@ public class MobileAppInterface extends JFrame {
     private void setupFrame() {
         setTitle("Mobile App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(375, 667); // iPhone-like dimensions
+        setSize(375, 667);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
@@ -28,41 +26,6 @@ public class MobileAppInterface extends JFrame {
         // Set background color
         getContentPane().setBackground(Color.WHITE);
     }
-
-    // private void createStatusBar() {
-    // JPanel statusBar = new JPanel(new BorderLayout());
-    // statusBar.setBackground(Color.WHITE);
-    // statusBar.setPreferredSize(new Dimension(375, 30));
-    // statusBar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-
-    // // Time label
-    // JLabel timeLabel = new JLabel("9:41");
-    // timeLabel.setFont(new Font("Arial", Font.BOLD, 14));
-    // timeLabel.setForeground(Color.BLACK);
-
-    // // Signal and battery indicators
-    // JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-    // rightPanel.setBackground(Color.WHITE);
-
-    // // Signal bars
-    // JLabel signalLabel = new JLabel("●●●");
-    // signalLabel.setFont(new Font("Arial", Font.BOLD, 12));
-
-    // // WiFi symbol
-    // JLabel wifiLabel = new JLabel("📶");
-
-    // // Battery
-    // JLabel batteryLabel = new JLabel("🔋");
-
-    // rightPanel.add(signalLabel);
-    // rightPanel.add(wifiLabel);
-    // rightPanel.add(batteryLabel);
-
-    // statusBar.add(timeLabel, BorderLayout.WEST);
-    // statusBar.add(rightPanel, BorderLayout.EAST);
-
-    // add(statusBar, BorderLayout.NORTH);
-    // }
 
     private void createContentArea() {
         contentPanel = new JPanel();
