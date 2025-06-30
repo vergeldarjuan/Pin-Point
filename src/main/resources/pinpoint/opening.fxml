@@ -20,7 +20,7 @@
         visible="false" />
 
     <!-- "PINpoint" Text -->
-    <Text fx:id="pinpointText" layoutX="160" layoutY="300" text="PINpoint"
+    <Text fx:id="pinpointText" layoutX="160" layoutY="300" text="PIN*point"
         style="-fx-font-size: 24px; -fx-fill: #7D0000;" visible="false" />
 
 </AnchorPane>
