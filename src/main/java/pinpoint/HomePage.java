@@ -44,7 +44,7 @@ public class HomePage extends Application {
 
         Text pinPointText = new Text("PIN*point maps");
         pinPointText.setFont(Font.font("Poppins", FontWeight.BOLD, 16));
-        pinPointText.setFill(Color.web("#8B4545"));
+        pinPointText.setFill(Color.web("#800000"));
 
         HBox subtitleLine1 = new HBox();
         subtitleLine1.setAlignment(Pos.CENTER);
@@ -66,7 +66,7 @@ public class HomePage extends Application {
         // Guide title
         Label guideTitle = new Label("GUIDE:");
         guideTitle.setFont(Font.font("Poppins", FontWeight.BOLD, 24));
-        guideTitle.setTextFill(Color.web("#8B4545"));
+        guideTitle.setTextFill(Color.web("#800000"));
         guideTitle.setAlignment(Pos.CENTER);
         guideTitle.setMaxWidth(Double.MAX_VALUE); // Make it fill the width
         guideTitle.setStyle("-fx-background-color: #FFD700;");
@@ -86,7 +86,7 @@ public class HomePage extends Application {
         // Bottom navigation
         HBox bottomNav = new HBox();
         bottomNav.setPrefHeight(80);
-        bottomNav.setStyle("-fx-background-color: #8B4545;");
+        bottomNav.setStyle("-fx-background-color: #800000;");
         bottomNav.setAlignment(Pos.CENTER);
         bottomNav.setSpacing(60);
 
@@ -156,7 +156,7 @@ public class HomePage extends Application {
         SVGPath locationIcon = new SVGPath();
         locationIcon.setContent(
                 "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z");
-        locationIcon.setFill(Color.web("#8B4545"));
+        locationIcon.setFill(Color.web("#800000"));
         locationIcon.setScaleX(2);
         locationIcon.setScaleY(2);
 
@@ -171,7 +171,7 @@ public class HomePage extends Application {
         SVGPath mapIcon = new SVGPath();
         mapIcon.setContent(
                 "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapIcon.setFill(Color.web("#8B4545"));
+        mapIcon.setFill(Color.web("#800000"));
         mapIcon.setScaleX(1.5);
         mapIcon.setScaleY(1.5);
 
@@ -185,7 +185,7 @@ public class HomePage extends Application {
     private Region createRouteIcon() {
         SVGPath routeIcon = new SVGPath();
         routeIcon.setContent("M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z");
-        routeIcon.setFill(Color.web("#8B4545"));
+        routeIcon.setFill(Color.web("#800000"));
         routeIcon.setScaleX(1.8);
         routeIcon.setScaleY(1.8);
 
