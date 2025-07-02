@@ -15,6 +15,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class HomePage extends Application {
+    private PinPointLoginSystem.User userData;
+
+    public HomePage(PinPointLoginSystem.User userData) {
+        this.userData = userData;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -93,7 +98,7 @@ public class HomePage extends Application {
         // Create navigation icons (keep references to SVGPath for color changes)
         SVGPath homeIconSVG = new SVGPath();
         homeIconSVG.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
-        homeIconSVG.setFill(Color.web("#FFD700"));
+        homeIconSVG.setFill(Color.web("#FFD700")); // Home is yellow by default
         homeIconSVG.setScaleX(1.5);
         homeIconSVG.setScaleY(1.5);
         StackPane homeIcon = new StackPane(homeIconSVG);
@@ -108,21 +113,30 @@ public class HomePage extends Application {
         StackPane mapIcon = new StackPane(mapIconSVG);
         mapIcon.setPrefSize(30, 30);
 
+        SVGPath profileIconSVG = new SVGPath();
+        profileIconSVG.setContent(
+                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
+        profileIconSVG.setFill(Color.WHITE); // Profile is white by default
+        profileIconSVG.setScaleX(1.2);
+        profileIconSVG.setScaleY(1.2);
+        StackPane profileIcon = new StackPane(profileIconSVG);
+        profileIcon.setPrefSize(30, 30);
+
         // Other icons
         Button starButton = createNavButton(createStarIcon(), "");
-        Button profileButton = createNavButton(createProfileIcon(), "");
+        Button profileButton = createNavButton(profileIcon, "");
 
         // Create navigation buttons using the icons above
         Button homeButton = createNavButton(homeIcon, "");
         Button mapButton = createNavButton(mapIcon, "");
 
         // Add buttons to navigation bar
-        bottomNav.getChildren().addAll(homeButton, starButton, mapButton, profileButton);
+        bottomNav.getChildren().setAll(homeButton, starButton, mapButton, profileButton);
 
         mainContainer.getChildren().addAll(headerSection, subtitleContainer, guideSection, bottomNav);
 
         Scene scene = new Scene(mainContainer, 375, 667);
-        primaryStage.setTitle("PUP Indoor Navigation");
+        primaryStage.setTitle("Home");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -130,17 +144,48 @@ public class HomePage extends Application {
 
         // Home button
         homeButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.web("#FFDF00")); // Yellow
-            mapIconSVG.setFill(Color.WHITE); // Map icon to white
+            homeIconSVG.setFill(Color.web("#FFD700")); // Home yellow
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.WHITE); // Profile white
+            // Already on HomePage, so no navigation needed
+        });
+
+        // Location Button
+        starButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.WHITE); // Profile white
+
+            // Switch to LocationPage
+            try {
+                new Location().start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         // Map button
         mapButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.WHITE); // Home icon to white
-            mapIconSVG.setFill(Color.web("#FFDF00")); // Map icon to yellow
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.web("#FFD700")); // Map yellow
+            profileIconSVG.setFill(Color.WHITE); // Profile white
             // Switch to Map page
             try {
                 new Map().start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Profile button
+        profileButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.web("#FFD700")); // Profile yellow
+
+            // Switch to UserProfile
+            try {
+                new pinpoint.User(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

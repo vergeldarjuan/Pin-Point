@@ -116,16 +116,26 @@ public class Map extends Application {
         SVGPath mapIconSVG = new SVGPath();
         mapIconSVG.setContent(
                 "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapIconSVG.setFill(Color.web("#FFDF00")); // Map icon is yellow by default
+        mapIconSVG.setFill(Color.web("#FFD700"));
         mapIconSVG.setScaleX(1.2);
         mapIconSVG.setScaleY(1.2);
 
         StackPane mapIcon = new StackPane(mapIconSVG);
         mapIcon.setPrefSize(30, 30);
 
+        SVGPath profileIconSVG = new SVGPath();
+        profileIconSVG.setContent(
+                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
+        profileIconSVG.setFill(Color.WHITE);
+        profileIconSVG.setScaleX(1.2);
+        profileIconSVG.setScaleY(1.2);
+
+        StackPane profileIcon = new StackPane(profileIconSVG);
+        profileIcon.setPrefSize(30, 30);
+
         // Other icons
         Button starButton = createNavButton(createStarIcon(), "");
-        Button profileButton = createNavButton(createProfileIcon(), "");
+        Button profileButton = createNavButton(profileIcon, "");
 
         // Create navigation buttons
         Button homeButton = createNavButton(homeIcon, "");
@@ -140,7 +150,7 @@ public class Map extends Application {
         mainContainer.setBottom(bottomNav);
 
         Scene scene = new Scene(mainContainer, 375, 667);
-        primaryStage.setTitle("PUP Floor Selector");
+        primaryStage.setTitle("Maps");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -148,12 +158,27 @@ public class Map extends Application {
 
         // Home button
         homeButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.web("#FFDF00")); // Yellow
-            mapIconSVG.setFill(Color.WHITE); // Map icon to white
+            homeIconSVG.setFill(Color.web("#FFD700")); // Home yellow
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.WHITE); // Profile white
 
             // Switch to HomePage
             try {
-                new HomePage().start(primaryStage);
+                new HomePage(null).start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Location Button
+        starButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.WHITE); // Profile white
+
+            // Switch to LocationPage
+            try {
+                new Location().start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -161,8 +186,23 @@ public class Map extends Application {
 
         // Map button
         mapButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.WHITE);
-            mapIconSVG.setFill(Color.web("#FFD700"));
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.web("#FFD700")); // Map yellow
+            profileIconSVG.setFill(Color.WHITE); // Profile white
+        });
+
+        // Profile button
+        profileButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.web("#FFD700")); // Profile yellow
+
+            // Switch to UserProfile
+            try {
+                new User(null).start(primaryStage); // This will redirect to User.java
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 
@@ -202,21 +242,6 @@ public class Map extends Application {
 
         StackPane container = new StackPane();
         container.getChildren().add(starIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
-    private Region createProfileIcon() {
-        SVGPath profileIcon = new SVGPath();
-        profileIcon.setContent(
-                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
-        profileIcon.setFill(Color.WHITE);
-        profileIcon.setScaleX(1.2);
-        profileIcon.setScaleY(1.2);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(profileIcon);
         container.setPrefSize(30, 30);
 
         return container;

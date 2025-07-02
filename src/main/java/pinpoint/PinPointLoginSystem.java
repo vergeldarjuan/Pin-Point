@@ -1,480 +1,393 @@
 package pinpoint;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
-public class PinPointLoginSystem extends JFrame {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
-    private JTextField usernameField, emailFieldSignup, emailFieldLogin;
-    private JPasswordField passwordFieldSignup, passwordFieldLogin;
-    private JCheckBox termsCheckbox;
+public class PinPointLoginSystem extends Application {
 
-    public PinPointLoginSystem() {
-        setupFrame();
-        createMainContainer();
-        createSignUpScreen();
-        createLoginScreen();
-        createMainApp();
+    // In-memory user storage (in real app, use database)
+    private Map<String, User> users = new HashMap<>();
+    private Stage primaryStage;
 
-        setVisible(true);
+    // User model
+    static class User {
+        String name;
+        String username;
+        String email;
+        String password;
+        String pupId;
+        String coursePosition;
+
+        User(String name, String username, String email, String password, String pupId, String coursePosition) {
+            this.name = name;
+            this.username = username;
+            this.email = email;
+            this.password = password;
+            this.pupId = pupId;
+            this.coursePosition = coursePosition;
+        }
     }
 
-    private void setupFrame() {
-        setTitle("PIN*point");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(375, 667);
-        setLocationRelativeTo(null);
-        setResizable(false);
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle("PIN*Point");
+        primaryStage.setResizable(false);
 
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-        add(mainPanel);
+        showLoginScene();
     }
 
-    private void createMainContainer() {
-        mainPanel = new JPanel(cardLayout);
-        add(mainPanel);
+    private void showLoginScene() {
+        VBox loginPanel = createLoginPanel();
+        Scene loginScene = new Scene(loginPanel, 375, 667);
+        primaryStage.setScene(loginScene);
+        primaryStage.show();
     }
 
-    private void createSignUpScreen() {
-        JPanel signUpPanel = new JPanel(new BorderLayout());
-        signUpPanel.setBackground(new Color(245, 245, 245));
-
-        // Main content container
-        JPanel outerContainer = new JPanel(new BorderLayout());
-        outerContainer.setBackground(new Color(245, 245, 245));
-        outerContainer.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-
-        // White content panel
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
-
-        // PIN*point logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        logoPanel.setBackground(Color.WHITE);
-        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
-
-        JLabel pinLabel = new JLabel("PIN");
-        pinLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        pinLabel.setForeground(new Color(139, 24, 24));
-
-        JLabel starLabel = new JLabel("*");
-        starLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        starLabel.setForeground(new Color(255, 223, 0));
-
-        JLabel pointLabel = new JLabel("point");
-        pointLabel.setFont(new Font("Arial", Font.PLAIN, 28));
-        pointLabel.setForeground(Color.BLACK);
-
-        logoPanel.add(pinLabel);
-        logoPanel.add(starLabel);
-        logoPanel.add(pointLabel);
-
-        // Register title
-        JLabel titleLabel = new JLabel("Register", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setForeground(Color.BLACK);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Form fields
-        usernameField = createStyledTextField("Enter your username");
-        emailFieldSignup = createStyledTextField("Enter your email");
-        passwordFieldSignup = createStyledPasswordField("Enter your password");
-
-        // Terms checkbox
-        JPanel termsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        termsPanel.setBackground(Color.WHITE);
-        termsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-
-        termsCheckbox = new JCheckBox();
-        termsCheckbox.setBackground(Color.WHITE);
-        termsCheckbox.setForeground(new Color(255, 193, 7)); // Yellow color
-
-        JLabel agreeLabel = new JLabel("I agree to the ");
-        agreeLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        agreeLabel.setForeground(Color.GRAY);
-
-        JLabel termsLabel = new JLabel("terms & conditions");
-        termsLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        termsLabel.setForeground(new Color(139, 24, 24));
-
-        termsPanel.add(termsCheckbox);
-        termsPanel.add(agreeLabel);
-        termsPanel.add(termsLabel);
-
-        // Sign Up button
-        JButton signUpButton = createStyledButton("Sign Up");
-
-        // Divider
-        JLabel dividerLabel = new JLabel("or Sign up with", SwingConstants.CENTER);
-        dividerLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        dividerLabel.setForeground(Color.GRAY);
-        dividerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Social buttons
-        JPanel socialPanel = createSocialButtonPanel();
-
-        // Already have account
-        JPanel loginLinkPanel = new JPanel(new FlowLayout());
-        loginLinkPanel.setBackground(Color.WHITE);
-        loginLinkPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-
-        JLabel haveAccountLabel = new JLabel("Already have an account? ");
-        haveAccountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        haveAccountLabel.setForeground(Color.GRAY);
-
-        JLabel loginLinkLabel = new JLabel("Login");
-        loginLinkLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        loginLinkLabel.setForeground(new Color(139, 24, 24));
-
-        loginLinkPanel.add(haveAccountLabel);
-        loginLinkPanel.add(loginLinkLabel);
-
-        // Add components with proper spacing
-        contentPanel.add(logoPanel);
-        contentPanel.add(Box.createVerticalStrut(30));
-        contentPanel.add(titleLabel);
-        contentPanel.add(Box.createVerticalStrut(30));
-
-        addFieldWithLabel(contentPanel, "Username", usernameField);
-        addFieldWithLabel(contentPanel, "Email", emailFieldSignup);
-        addFieldWithLabel(contentPanel, "Password", passwordFieldSignup);
-
-        contentPanel.add(termsPanel);
-        contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(signUpButton);
-        contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(dividerLabel);
-        contentPanel.add(Box.createVerticalStrut(15));
-        contentPanel.add(socialPanel);
-        contentPanel.add(Box.createVerticalGlue());
-        contentPanel.add(loginLinkPanel);
-
-        outerContainer.add(contentPanel, BorderLayout.CENTER);
-        signUpPanel.add(outerContainer, BorderLayout.CENTER);
-
-        // Event listeners
-        signUpButton.addActionListener(e -> {
-            if (validateSignUp()) {
-                JOptionPane.showMessageDialog(this, "Account created successfully!");
-                cardLayout.show(mainPanel, "LOGIN");
-            }
-        });
-
-        loginLinkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cardLayout.show(mainPanel, "LOGIN");
-            }
-        });
-
-        mainPanel.add(signUpPanel, "SIGNUP");
+    private void showSignUpScene() {
+        VBox registerPanel = createRegisterPanel();
+        Scene signUpScene = new Scene(registerPanel, 375, 667);
+        primaryStage.setScene(signUpScene);
+        primaryStage.show();
     }
 
-    private void createLoginScreen() {
-        JPanel loginPanel = new JPanel(new BorderLayout());
-        loginPanel.setBackground(new Color(245, 245, 245));
-
-        // Main content container
-        JPanel outerContainer = new JPanel(new BorderLayout());
-        outerContainer.setBackground(new Color(245, 245, 245));
-        outerContainer.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-
-        // White content panel
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
+    private VBox createRegisterPanel() {
+        VBox panel = new VBox(20);
+        panel.setAlignment(Pos.TOP_CENTER);
+        panel.setStyle("-fx-background-color: #f5f5f5;");
+        panel.setPadding(new Insets(30, 30, 30, 30));
 
         // PIN point logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        logoPanel.setBackground(Color.WHITE);
-        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
+        HBox logoBox = new HBox(5);
+        logoBox.setAlignment(Pos.CENTER);
+        Text pinText = new Text("PIN");
+        pinText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        pinText.setFill(Color.web("#800000"));
+        Text starText = new Text("*");
+        starText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        starText.setFill(Color.web("#FFDF00"));
+        Text pointText = new Text("point");
+        pointText.setFont(Font.font("Arial", FontWeight.NORMAL, 28));
+        pointText.setFill(Color.web("#800000"));
+        logoBox.getChildren().addAll(pinText, starText, pointText);
 
-        JLabel pinLabel = new JLabel("PIN");
-        pinLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        pinLabel.setForeground(new Color(139, 24, 24));
+        // Register title
+        Text registerTitle = new Text("Register");
+        registerTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        registerTitle.setFill(Color.BLACK);
 
-        JLabel starLabel = new JLabel("*");
-        starLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        starLabel.setForeground(new Color(255, 223, 0));
+        // Enlarged form fields
+        TextField nameField = createStyledTextField("Enter your full name");
+        nameField.setPrefHeight(50);
+        nameField.setPrefWidth(320);
 
-        JLabel pointLabel = new JLabel("point");
-        pointLabel.setFont(new Font("Arial", Font.PLAIN, 28));
-        pointLabel.setForeground(Color.BLACK);
+        TextField usernameField = createStyledTextField("Enter your username");
+        usernameField.setPrefHeight(50);
+        usernameField.setPrefWidth(320);
 
-        logoPanel.add(pinLabel);
-        logoPanel.add(starLabel);
-        logoPanel.add(pointLabel);
+        TextField emailField = createStyledTextField("Enter your email");
+        emailField.setPrefHeight(50);
+        emailField.setPrefWidth(320);
 
-        // Login title
-        JLabel titleLabel = new JLabel("Login", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setForeground(Color.BLACK);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        PasswordField passwordField = createStyledPasswordField("Enter your password");
+        passwordField.setPrefHeight(50);
+        passwordField.setPrefWidth(320);
 
-        // Form fields
-        emailFieldLogin = createStyledTextField("Enter your email");
-        passwordFieldLogin = createStyledPasswordField("Enter your password");
+        TextField pupIdField = createStyledTextField("Enter your PUP Student/Employee ID");
+        pupIdField.setPrefHeight(50);
+        pupIdField.setPrefWidth(320);
 
-        // Forgot password
-        JPanel forgotPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        forgotPanel.setBackground(Color.WHITE);
-        forgotPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+        TextField coursePositionField = createStyledTextField("Enter your Course/Position");
+        coursePositionField.setPrefHeight(50);
+        coursePositionField.setPrefWidth(320);
 
-        JLabel forgotLabel = new JLabel("Forgot Password?");
-        forgotLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        forgotLabel.setForeground(Color.GRAY);
+        // Terms checkbox
+        CheckBox termsBox = new CheckBox();
+        termsBox.setStyle("-fx-text-fill: black;");
+        HBox termsRow = new HBox(10);
+        termsRow.setAlignment(Pos.CENTER_LEFT);
+        Text agreeText = new Text("I agree to the ");
+        Text termsLink = new Text("terms & conditions");
+        termsLink.setFill(Color.web("#4A90E2"));
+        termsLink.setStyle("-fx-cursor: hand;");
+        termsRow.getChildren().addAll(termsBox, agreeText, termsLink);
 
-        forgotPanel.add(forgotLabel);
+        // Sign Up button
+        Button signUpBtn = new Button("Sign Up");
+        signUpBtn.setPrefWidth(320);
+        signUpBtn.setPrefHeight(50);
+        signUpBtn.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white; " +
+                "-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 25;");
 
-        // Sign In button
-        JButton signInButton = createStyledButton("Sign In");
+        // Already have account
+        HBox accountBox = new HBox(5);
+        accountBox.setAlignment(Pos.CENTER);
+        Text alreadyText = new Text("Already have an account? ");
+        Text loginLink = new Text("Login");
+        loginLink.setFill(Color.web("#8B0000"));
+        loginLink.setStyle("-fx-cursor: hand; -fx-font-weight: bold;");
+        accountBox.getChildren().addAll(alreadyText, loginLink);
 
-        // Divider
-        JLabel dividerLabel = new JLabel("or Sign in with", SwingConstants.CENTER);
-        dividerLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        dividerLabel.setForeground(Color.GRAY);
-        dividerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Sign up button action
+        signUpBtn.setOnAction(e -> handleSignUp(nameField, usernameField, emailField,
+                passwordField, pupIdField, coursePositionField, termsBox));
 
-        // Social buttons
-        JPanel socialPanel = createSocialButtonPanel();
+        // Switch to login scene
+        loginLink.setOnMouseClicked(e -> showLoginScene());
+
+        panel.getChildren().addAll(logoBox, registerTitle,
+                createFieldWithLabel("Name", nameField),
+                createFieldWithLabel("Username", usernameField),
+                createFieldWithLabel("Email", emailField),
+                createFieldWithLabel("Password", passwordField),
+                createFieldWithLabel("PUP Student/Employee ID", pupIdField),
+                createFieldWithLabel("Course/Position", coursePositionField),
+                termsRow, signUpBtn, accountBox);
+
+        // Wrap the panel in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane(panel);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: #f5f5f5; -fx-border-color: transparent;");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        VBox root = new VBox(scrollPane);
+        root.setPrefSize(375, 667);
+        root.setStyle("-fx-background-color: #f5f5f5;");
+
+        return root;
+    }
+
+    private VBox createLoginPanel() {
+        // Main container
+        BorderPane mainContainer = new BorderPane();
+        mainContainer.setPrefSize(375, 667);
+        mainContainer.setStyle("-fx-background-color: #F8F8F8;");
+
+        // Header section
+        VBox headerSection = new VBox();
+        headerSection.setAlignment(Pos.CENTER);
+        headerSection.setPadding(new Insets(100, 0, 20, 0));
+
+        // PIN*Point logo
+        HBox logoBox = new HBox(5);
+        logoBox.setAlignment(Pos.CENTER);
+        Text pinText = new Text("PIN");
+        pinText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        pinText.setFill(Color.web("#800000"));
+        Text starText = new Text("*");
+        starText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        starText.setFill(Color.web("#FFDF00"));
+        Text pointText = new Text("point");
+        pointText.setFont(Font.font("Arial", FontWeight.NORMAL, 28));
+        pointText.setFill(Color.web("#800000"));
+        logoBox.getChildren().addAll(pinText, starText, pointText);
+
+        headerSection.getChildren().add(logoBox);
+
+        // Form area (white card)
+        VBox formCard = new VBox(18);
+        formCard.setAlignment(Pos.CENTER);
+        formCard.setPadding(new Insets(30, 30, 30, 30));
+        formCard.setStyle(
+                "-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, #cccccc, 8, 0, 0, 2);");
+        formCard.setMaxWidth(320);
+
+        Label loginLabel = new Label("Login");
+        loginLabel.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        loginLabel.setTextFill(Color.web("#800000"));
+
+        TextField emailField = createStyledTextField("Enter your email");
+        PasswordField passwordField = createStyledPasswordField("Enter your password");
+
+        Button signInBtn = new Button("Sign In");
+        signInBtn.setPrefWidth(220);
+        signInBtn.setPrefHeight(40);
+        signInBtn.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        signInBtn.setStyle("-fx-background-color: #800000; -fx-text-fill: white; -fx-background-radius: 20;");
 
         // Don't have account
-        JPanel signUpLinkPanel = new JPanel(new FlowLayout());
-        signUpLinkPanel.setBackground(Color.WHITE);
-        signUpLinkPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        HBox accountBox = new HBox(5);
+        accountBox.setAlignment(Pos.CENTER);
+        Label dontHaveText = new Label("Don't have an account?");
+        dontHaveText.setFont(Font.font("Arial", 13));
+        dontHaveText.setTextFill(Color.GRAY);
+        Hyperlink registerLink = new Hyperlink("Register");
+        registerLink.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        registerLink.setTextFill(Color.web("#800000"));
+        registerLink.setBorder(Border.EMPTY);
+        registerLink.setPadding(Insets.EMPTY);
+        accountBox.getChildren().addAll(dontHaveText, registerLink);
 
-        JLabel noAccountLabel = new JLabel("Don't have an account? ");
-        noAccountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        noAccountLabel.setForeground(Color.GRAY);
+        // Sign in button action
+        signInBtn.setOnAction(e -> handleSignIn(emailField, passwordField));
+        registerLink.setOnAction(e -> showSignUpScene());
 
-        JLabel registerLinkLabel = new JLabel("Register");
-        registerLinkLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        registerLinkLabel.setForeground(new Color(139, 24, 24));
+        formCard.getChildren().addAll(
+                loginLabel,
+                createFieldWithLabel("Email", emailField),
+                createFieldWithLabel("Password", passwordField),
+                signInBtn,
+                accountBox);
 
-        signUpLinkPanel.add(noAccountLabel);
-        signUpLinkPanel.add(registerLinkLabel);
+        // Center the form card
+        VBox centerBox = new VBox(formCard);
+        centerBox.setAlignment(Pos.CENTER);
 
-        // Add components
-        contentPanel.add(logoPanel);
-        contentPanel.add(Box.createVerticalStrut(30));
-        contentPanel.add(titleLabel);
-        contentPanel.add(Box.createVerticalStrut(30));
+        mainContainer.setTop(headerSection);
+        mainContainer.setCenter(centerBox);
 
-        addFieldWithLabel(contentPanel, "Email", emailFieldLogin);
-        addFieldWithLabel(contentPanel, "Password", passwordFieldLogin);
-
-        contentPanel.add(forgotPanel);
-        contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(signInButton);
-        contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(dividerLabel);
-        contentPanel.add(Box.createVerticalStrut(15));
-        contentPanel.add(socialPanel);
-        contentPanel.add(Box.createVerticalGlue());
-        contentPanel.add(signUpLinkPanel);
-
-        outerContainer.add(contentPanel, BorderLayout.CENTER);
-        loginPanel.add(outerContainer, BorderLayout.CENTER);
-
-        // Event listeners
-        signInButton.addActionListener(e -> {
-            if (validateLogin()) {
-                cardLayout.show(mainPanel, "MAIN_APP");
-            }
-        });
-
-        registerLinkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cardLayout.show(mainPanel, "SIGNUP");
-            }
-        });
-
-        mainPanel.add(loginPanel, "LOGIN");
+        VBox root = new VBox(mainContainer);
+        return root;
     }
 
-    private void createMainApp() {
-        // Create your existing MobileAppInterface and integrate it
-        MobileAppInterface appInterface = new MobileAppInterface();
-
-        // Remove the default close operation from the main app since it's now embedded
-        appInterface.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        // Get the content from your existing app
-        JPanel appContent = (JPanel) appInterface.getContentPane();
-
-        mainPanel.add(appContent, "MAIN_APP");
+    private VBox createFieldWithLabel(String labelText, Control field) {
+        VBox fieldBox = new VBox(8);
+        Label label = new Label(labelText);
+        label.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        label.setTextFill(Color.BLACK);
+        fieldBox.getChildren().addAll(label, field);
+        return fieldBox;
     }
 
-    private JTextField createStyledTextField(String placeholder) {
-        JTextField field = new JTextField(placeholder);
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
-        field.setForeground(Color.GRAY);
-        field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
-                BorderFactory.createEmptyBorder(12, 15, 12, 40)));
-
-        // Add focus listener for placeholder behavior
-        field.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                if (field.getText().equals(placeholder)) {
-                    field.setText("");
-                    field.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                if (field.getText().isEmpty()) {
-                    field.setText(placeholder);
-                    field.setForeground(Color.GRAY);
-                }
-            }
-        });
-
+    private TextField createStyledTextField(String promptText) {
+        TextField field = new TextField();
+        field.setPromptText(promptText);
+        field.setPrefHeight(40);
+        field.setPrefWidth(290);
+        field.setStyle("-fx-background-radius: 20; -fx-border-radius: 20; " +
+                "-fx-border-color: #800000; " +
+                "-fx-border-width: 1.5; " +
+                "-fx-background-color: white; -fx-padding: 0 15 0 15;");
         return field;
     }
 
-    private JPasswordField createStyledPasswordField(String placeholder) {
-        JPasswordField field = new JPasswordField();
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
-        field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
-                BorderFactory.createEmptyBorder(12, 15, 12, 40)));
-
+    private PasswordField createStyledPasswordField(String promptText) {
+        PasswordField field = new PasswordField();
+        field.setPromptText(promptText);
+        field.setPrefHeight(40);
+        field.setPrefWidth(290);
+        field.setStyle("-fx-background-radius: 20; -fx-border-radius: 20; " +
+                "-fx-border-color: #800000; " +
+                "-fx-border-width: 1.5; " +
+                "-fx-background-color: white; -fx-padding: 0 15 0 15;");
         return field;
     }
 
-    private JButton createStyledButton(String text) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(getBackground());
-                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 25, 25));
-                super.paintComponent(g);
-                g2.dispose();
-            }
-        };
+    private void handleSignUp(TextField nameField, TextField usernameField, TextField emailField,
+            PasswordField passwordField, TextField pupIdField, TextField coursePositionField,
+            CheckBox termsBox) {
 
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setBackground(new Color(139, 24, 24));
-        button.setForeground(Color.WHITE);
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        button.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        return button;
-    }
-
-    private JPanel createSocialButtonPanel() {
-        JPanel socialPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        socialPanel.setBackground(Color.WHITE);
-        socialPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-
-        // Apple button
-        // ImageIcon appleIcon = new ImageIcon(
-        // "C:/Users/Vergel Dar Juan/Documents/GitHub/Pin-Point/img/fb.png");
-        // JLabel appleLabel = new JLabel(appleIcon);
-        JButton appleBtn = createSocialButton("A", Color.BLACK);
-        // Google button
-        JButton googleBtn = createSocialButton("G", new Color(219, 68, 55));
-        // Facebook button
-        JButton facebookBtn = createSocialButton("F", new Color(24, 119, 242));
-
-        // socialPanel.add(appleLabel);
-        socialPanel.add(appleBtn);
-        socialPanel.add(googleBtn);
-        socialPanel.add(facebookBtn);
-
-        return socialPanel;
-    }
-
-    private JButton createSocialButton(String text, Color bgColor) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(getBackground());
-                g2.fillOval(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
-                g2.dispose();
-            }
-        };
-
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
-        button.setPreferredSize(new Dimension(45, 45));
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-
-        return button;
-    }
-
-    private void addFieldWithLabel(JPanel panel, String labelText, JComponent field) {
-        JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        label.setForeground(Color.BLACK);
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        panel.add(label);
-        panel.add(Box.createVerticalStrut(8));
-        panel.add(field);
-        panel.add(Box.createVerticalStrut(15));
-    }
-
-    private boolean validateLogin() {
-        String email = emailFieldLogin.getText().trim();
-        String password = new String(passwordFieldLogin.getPassword());
-
-        if (email.isEmpty() || email.equals("Enter your email") || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields");
-            return false;
-        }
-
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid email");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean validateSignUp() {
+        String name = nameField.getText().trim();
         String username = usernameField.getText().trim();
-        String email = emailFieldSignup.getText().trim();
-        String password = new String(passwordFieldSignup.getPassword());
+        String email = emailField.getText().trim();
+        String password = passwordField.getText();
+        String pupId = pupIdField.getText().trim();
+        String coursePosition = coursePositionField.getText().trim();
 
-        if (username.isEmpty() || username.equals("Enter your username") ||
-                email.isEmpty() || email.equals("Enter your email") ||
-                password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields");
-            return false;
+        // Validation
+        if (name.isEmpty() || username.isEmpty() || email.isEmpty() ||
+                password.isEmpty() || pupId.isEmpty() || coursePosition.isEmpty()) {
+            showAlert("Error", "All fields are required!");
+            return;
         }
 
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid email");
-            return false;
+        if (!isValidEmail(email)) {
+            showAlert("Error", "Please enter a valid email address!");
+            return;
         }
 
-        if (!termsCheckbox.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Please agree to the terms & conditions");
-            return false;
+        if (password.length() < 6) {
+            showAlert("Error", "Password must be at least 6 characters long!");
+            return;
         }
 
-        return true;
+        if (!termsBox.isSelected()) {
+            showAlert("Error", "Please agree to the terms and conditions!");
+            return;
+        }
+
+        if (users.containsKey(email)) {
+            showAlert("Error", "An account with this email already exists!");
+            return;
+        }
+
+        if (users.values().stream().anyMatch(u -> u.username.equals(username))) {
+            showAlert("Error", "Username already taken!");
+            return;
+        }
+
+        // Create user
+        User newUser = new User(name, username, email, password, pupId, coursePosition);
+        users.put(email, newUser);
+
+        showAlert("Success", "Account created successfully! You can now log in.");
+
+        // Clear fields
+        nameField.clear();
+        usernameField.clear();
+        emailField.clear();
+        passwordField.clear();
+        pupIdField.clear();
+        coursePositionField.clear();
+        termsBox.setSelected(false);
+
+        // Go back to login after successful sign up
+        showLoginScene();
+    }
+
+    private void handleSignIn(TextField emailField, PasswordField passwordField) {
+        String email = emailField.getText().trim();
+        String password = passwordField.getText();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Please enter both email and password!");
+            return;
+        }
+
+        User user = users.get(email);
+        if (user == null || !user.password.equals(password)) {
+            showAlert("Error", "Invalid email or password!");
+            return;
+        }
+
+        // Successful login - redirect to HomePage with user data
+        try {
+            new HomePage(user).start(primaryStage);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showAlert("Error", "Failed to load Home Page.");
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
