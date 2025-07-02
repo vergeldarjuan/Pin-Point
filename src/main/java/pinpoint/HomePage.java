@@ -35,7 +35,7 @@ public class HomePage extends Application {
         // Subtitle section (separate from headerSection)
         VBox subtitleContainer = new VBox();
         subtitleContainer.setAlignment(Pos.CENTER);
-        subtitleContainer.setPadding(new Insets(20, 20, 0, 20));
+        subtitleContainer.setPadding(new Insets(10, 20, 10, 20));
         subtitleContainer.setStyle("-fx-background-color: white;"); // Add this line
 
         Text exploreText = new Text("Explore PUP with ease — ");
