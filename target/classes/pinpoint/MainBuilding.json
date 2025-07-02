@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    { "id": "A1", "name": "Entrance Lobby", "floor": 1, "description": "Main entrance lobby" },
+    { "id": "B1", "name": "Registrar Office", "floor": 1, "description": "Student registrar office" },
+    { "id": "C2", "name": "Library", "floor": 2, "description": "PUP Main Library" }
+  ],
+  "edges": [
+    { "source": "A1", "destination": "B1", "weight": 5 },
+    { "source": "B1", "destination": "C2", "weight": 10 },
+    { "source": "A1", "destination": "C2", "weight": 15 }
+  ]
+}
