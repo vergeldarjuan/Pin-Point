@@ -69,7 +69,7 @@ public class HomePage extends Application {
         guideTitle.setTextFill(Color.web("#800000"));
         guideTitle.setAlignment(Pos.CENTER);
         guideTitle.setMaxWidth(Double.MAX_VALUE); // Make it fill the width
-        guideTitle.setStyle("-fx-background-color: #FFD700;");
+        guideTitle.setStyle("-fx-background-color: #FFDF00;");
         guideTitle.setPadding(new Insets(5, 0, 5, 0));
 
         // Step 1
@@ -90,11 +90,31 @@ public class HomePage extends Application {
         bottomNav.setAlignment(Pos.CENTER);
         bottomNav.setSpacing(60);
 
-        // Create navigation buttons
-        Button homeButton = createNavButton(createHomeIcon(), "");
+        // Create navigation icons (keep references to SVGPath for color changes)
+        SVGPath homeIconSVG = new SVGPath();
+        homeIconSVG.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
+        homeIconSVG.setFill(Color.web("#FFD700"));
+        homeIconSVG.setScaleX(1.5);
+        homeIconSVG.setScaleY(1.5);
+        StackPane homeIcon = new StackPane(homeIconSVG);
+        homeIcon.setPrefSize(30, 30);
+
+        SVGPath mapIconSVG = new SVGPath();
+        mapIconSVG.setContent(
+                "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
+        mapIconSVG.setFill(Color.WHITE); // Map is white by default
+        mapIconSVG.setScaleX(1.2);
+        mapIconSVG.setScaleY(1.2);
+        StackPane mapIcon = new StackPane(mapIconSVG);
+        mapIcon.setPrefSize(30, 30);
+
+        // Other icons
         Button starButton = createNavButton(createStarIcon(), "");
-        Button mapButton = createNavButton(createMapNavIcon(), "");
         Button profileButton = createNavButton(createProfileIcon(), "");
+
+        // Create navigation buttons using the icons above
+        Button homeButton = createNavButton(homeIcon, "");
+        Button mapButton = createNavButton(mapIcon, "");
 
         // Add buttons to navigation bar
         bottomNav.getChildren().addAll(homeButton, starButton, mapButton, profileButton);
@@ -105,6 +125,27 @@ public class HomePage extends Application {
         primaryStage.setTitle("PUP Indoor Navigation");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // Navigation Button Actions
+
+        // Home button
+        homeButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.web("#FFDF00")); // Yellow
+            mapIconSVG.setFill(Color.WHITE); // Map icon to white
+        });
+
+        // Map button
+        mapButton.setOnAction(e -> {
+            homeIconSVG.setFill(Color.WHITE); // Home icon to white
+            mapIconSVG.setFill(Color.web("#FFDF00")); // Map icon to yellow
+            // Switch to Map page
+            try {
+                new Map().start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
     }
 
     private HBox createGuideStep(String text, Region icon) {
@@ -145,9 +186,6 @@ public class HomePage extends Application {
         button.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
         button.setPrefSize(30, 30); // Adjust size as needed
         button.setFocusTraversable(false);
-
-        // Optional: Add action handler
-        // button.setOnAction(e -> System.out.println(label + " clicked"));
 
         return button;
     }
@@ -196,20 +234,6 @@ public class HomePage extends Application {
         return container;
     }
 
-    private Region createHomeIcon() {
-        SVGPath homeIcon = new SVGPath();
-        homeIcon.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
-        homeIcon.setFill(Color.web("#FFD700"));
-        homeIcon.setScaleX(1.5);
-        homeIcon.setScaleY(1.5);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(homeIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
     private Region createStarIcon() {
         SVGPath starIcon = new SVGPath();
         starIcon.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
@@ -219,21 +243,6 @@ public class HomePage extends Application {
 
         StackPane container = new StackPane();
         container.getChildren().add(starIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
-    private Region createMapNavIcon() {
-        SVGPath mapNavIcon = new SVGPath();
-        mapNavIcon.setContent(
-                "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapNavIcon.setFill(Color.WHITE);
-        mapNavIcon.setScaleX(1.2);
-        mapNavIcon.setScaleY(1.2);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(mapNavIcon);
         container.setPrefSize(30, 30);
 
         return container;

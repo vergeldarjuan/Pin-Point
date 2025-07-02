@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <exec.mainClass>pinpoint.HomePage</exec.mainClass>
+        <exec.mainClass>pinpoint.Map</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -36,7 +36,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>pinpoint.HomePage</mainClass>
+                    <mainClass>pinpoint.Map</mainClass>
                     <arguments>
                         <argument>--module-path</argument>
                         <argument>C:\Users\Vergel Dar

@@ -1,3 +1,5 @@
+package pinpoint;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,7 +30,7 @@ public class PinPointLogo {
 
     static class LogoPanel extends JPanel {
         private Color currentBg = new Color(0xFAF3E0); // Start: cream
-        private Color targetBg = new Color(0x800000);  // End: maroon
+        private Color targetBg = new Color(0x800000); // End: maroon
         private float progress = 0.0f; // animation progress
         private Timer fadeTimer;
         private Runnable onComplete;
@@ -38,7 +40,8 @@ public class PinPointLogo {
         public LogoPanel() {
             setBackground(currentBg);
             try {
-                poppinsExtraBold = Font.createFont(Font.TRUETYPE_FONT, new File("Poppins-ExtraBold.ttf")).deriveFont(48f);
+                poppinsExtraBold = Font.createFont(Font.TRUETYPE_FONT, new File("Poppins-ExtraBold.ttf"))
+                        .deriveFont(48f);
                 poppinsRegular = Font.createFont(Font.TRUETYPE_FONT, new File("Poppins-Regular.ttf")).deriveFont(48f);
 
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -60,7 +63,8 @@ public class PinPointLogo {
                     if (progress >= 1f) {
                         progress = 1f;
                         fadeTimer.stop();
-                        if (onComplete != null) onComplete.run();
+                        if (onComplete != null)
+                            onComplete.run();
                     }
                     repaint();
                 }
