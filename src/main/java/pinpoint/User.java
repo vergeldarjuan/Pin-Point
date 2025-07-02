@@ -16,7 +16,10 @@ import javafx.stage.Stage;
 
 public class User extends Application {
 
-    private PinPointLoginSystem.User userData;
+    private PinPointLoginSystem.User userData; // Store user info
+
+    public User() {
+    }
 
     public User(PinPointLoginSystem.User userData) {
         this.userData = userData;
@@ -90,53 +93,69 @@ public class User extends Application {
         profileSection.getChildren().add(profileWithCamera);
 
         // Form fields (with references for editing)
-        TextField nameField = new TextField(userData.name);
-        TextField usernameField = new TextField(userData.username);
-        TextField emailField = new TextField(userData.email);
-        TextField pupIdField = new TextField(userData.pupId);
-        TextField courseField = new TextField(userData.coursePosition);
+        TextField[] nameField = new TextField[1];
+        TextField[] usernameField = new TextField[1];
+        TextField[] emailField = new TextField[1];
+        TextField[] idField = new TextField[1];
+        TextField[] courseField = new TextField[1];
 
-        nameField.setEditable(false);
-        usernameField.setEditable(false);
-        emailField.setEditable(false);
-        pupIdField.setEditable(false);
-        courseField.setEditable(false);
+        VBox formSection = new VBox();
+        formSection.setSpacing(15);
+        formSection.setAlignment(Pos.CENTER);
+
+        VBox nameSection = createFormField("Your Name", userData != null ? userData.name : "", false, nameField);
+        VBox usernameSection = createFormField("Username", userData != null ? userData.username : "", false,
+                usernameField);
+        VBox emailSection = createFormField("Email", userData != null ? userData.email : "", false, emailField);
+        VBox idSection = createFormField("PUP Student/Employee ID", userData != null ? userData.pupId : "", false,
+                idField);
+        VBox courseSection = createFormField("Course/Position", userData != null ? userData.coursePosition : "", false,
+                courseField);
+
+        formSection.getChildren().addAll(nameSection, usernameSection, emailSection, idSection, courseSection);
 
         // Edit/Save button
         Button editButton = new Button("EDIT");
-        Button saveButton = new Button("SAVE");
-        saveButton.setDisable(true);
-
+        editButton.setPrefWidth(140);
+        editButton.setPrefHeight(40);
+        editButton.setStyle(
+                "-fx-background-color: #800000; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-family: Arial; " +
+                        "-fx-font-size: 15px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-border-radius: 8; " +
+                        "-fx-cursor: hand;");
         editButton.setOnAction(e -> {
-            nameField.setEditable(true);
-            usernameField.setEditable(true);
-            emailField.setEditable(true);
-            pupIdField.setEditable(true);
-            courseField.setEditable(true);
-            saveButton.setDisable(false);
-            editButton.setDisable(true);
+            if (editButton.getText().equals("EDIT")) {
+                // Enable editing
+                nameField[0].setEditable(true);
+                usernameField[0].setEditable(true);
+                emailField[0].setEditable(true);
+                idField[0].setEditable(true);
+                courseField[0].setEditable(true);
+                editButton.setText("SAVE");
+            } else {
+                // Save changes
+                if (userData != null) {
+                    userData.name = nameField[0].getText();
+                    userData.username = usernameField[0].getText();
+                    userData.email = emailField[0].getText();
+                    userData.pupId = idField[0].getText();
+                    userData.coursePosition = courseField[0].getText();
+                }
+                nameField[0].setEditable(false);
+                usernameField[0].setEditable(false);
+                emailField[0].setEditable(false);
+                idField[0].setEditable(false);
+                courseField[0].setEditable(false);
+                editButton.setText("EDIT");
+            }
         });
 
-        saveButton.setOnAction(e -> {
-            userData.name = nameField.getText();
-            userData.username = usernameField.getText();
-            userData.email = emailField.getText();
-            userData.pupId = pupIdField.getText();
-            userData.coursePosition = courseField.getText();
-
-            nameField.setEditable(false);
-            usernameField.setEditable(false);
-            emailField.setEditable(false);
-            pupIdField.setEditable(false);
-            courseField.setEditable(false);
-            saveButton.setDisable(true);
-            editButton.setDisable(false);
-        });
-
-        // Form fields
-        VBox formSection = new VBox();
-        formSection.setSpacing(15);
-        formSection.getChildren().addAll(nameField, usernameField, emailField, pupIdField, courseField);
+        // Add edit button to formSection
+        formSection.getChildren().add(editButton);
 
         // Log Out button
         Button logOutButton = new Button("LOG OUT");
