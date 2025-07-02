@@ -42,7 +42,7 @@ public class HomePage extends Application {
         exploreText.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         exploreText.setFill(Color.web("black"));
 
-        Text pinPointText = new Text("PIN*point maps");
+        Text pinPointText = new Text("PIN*point");
         pinPointText.setFont(Font.font("Poppins", FontWeight.BOLD, 16));
         pinPointText.setFill(Color.web("#800000"));
 
@@ -50,7 +50,7 @@ public class HomePage extends Application {
         subtitleLine1.setAlignment(Pos.CENTER);
         subtitleLine1.getChildren().addAll(exploreText, pinPointText);
 
-        Label pathLabel = new Label("your path and keeps you on track!");
+        Label pathLabel = new Label("maps your path and keeps you on track!");
         pathLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         pathLabel.setTextFill(Color.web("black"));
         pathLabel.setAlignment(Pos.CENTER);
