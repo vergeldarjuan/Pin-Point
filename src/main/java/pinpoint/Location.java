@@ -238,7 +238,7 @@ public class Location extends Application {
             }
         });
 
-        // Set up the main layout
+        // Set up the main layouts
         mainContainer.setCenter(contentArea);
         mainContainer.setBottom(bottomNav);
 
