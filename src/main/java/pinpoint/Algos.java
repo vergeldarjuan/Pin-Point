@@ -74,15 +74,25 @@ public class Algos {
             addNode("109", "1st Floor South", 8, 0);
 
             // 1st Floor East
-            addNode("1E01", "1st Floor East", 0, 1);
-            addNode("DMST", "1st Floor East", 1, 1);
-            addNode("CCHQ", "1st Floor East", 2, 1);
-            addNode("Clinic", "1st Floor East", 3, 1);
-            addNode("Facilities", "1st Floor East", 4, 1);
+            addNode("Stairs", "1st Floor EAST", 1, -1);
+            addNode("101", "1st Floor East", 2, -1);
+            addNode("DMST", "1st Floor East", 3, -1);
+            addNode("CCHQ", "1st Floor East", 4, -1);
+            addNode("117", "1st Floor East", 5, -1);
+            addNode("Medical Cliic", "1st Floor East", 1, 1);
+            addNode("DMHS", "1st Floor EAST", 2, 1);
+            addNode("Dental Clinic", "1st Floor EAST", 3, 1);
+
 
             // 1st Floor West
-            addNode("Admission", "1st Floor West", 0, -1);
-            addNode("Registration", "1st Floor West", 1, -1);
+            addNode("Stairs", "1st Floor WEST", -1, 1);
+            addNode("AARS", "1st Floor West", -2, 1);
+            addNode("115", "1st Floor West", -3, 1);
+            addNode("117", "1st Floor West", -4, 1);
+            addNode("119", "1st Floor West", -5, 1);
+            addNode("208", "1st Floor West", -1, -1);
+            addNode("202", "1st Floor West", -2, -1);
+            addNode("RECORDS 1-5", "1st Floor West", -3, -1);
 
             // 2nd Floor South
             addNode("202", "2nd Floor South", 0, 10);
@@ -101,14 +111,51 @@ public class Algos {
             addNode("215", "2nd Floor South", 13, 10);
 
             // 2nd Floor East
-            addNode("201", "2nd Floor East", 0, 11);
-            addNode("2E02", "2nd Floor East", 1, 11);
-            addNode("2E03", "2nd Floor East", 2, 11);
-            addNode("2E04", "2nd Floor East", 3, 11);
-            addNode("2E05", "2nd Floor East", 4, 11);
-            addNode("2E06", "2nd Floor East", 5, 11);
-            addNode("2E07", "2nd Floor East", 6, 11);
-            addNode("2E08", "2nd Floor East", 7, 11);
+            addNode("Stairs", "2nd Floor EAST", 1, -1);
+            addNode("201", "2nd Floor EAST", 2, -1);
+            addNode("203", "2nd Floor EAST", 3, -1);
+            addNode("205", "2nd Floor EAST", 4, -1);
+            addNode("207", "2nd Floor EAST", 5, -1);
+            addNode("209", "2nd Floor EAST", 6, -1);
+            addNode("211", "2nd Floor EAST", 7, -1);
+            addNode("213", "2nd Floor EAST", 8, -1);
+            addNode("215", "2nd Floor EAST", 9, -1);
+            addNode("217", "2nd Floor EAST", 10, -1);
+            addNode("219", "2nd Floor EAST", 11, -1);
+            addNode("202", "2nd Floor EAST", 1, 1);
+            addNode("204", "2nd Floor EAST", 2, 1);
+            addNode("206", "2nd Floor EAST", 3, 1);
+            addNode("208", "2nd Floor EAST", 4, 1);
+            addNode("210", "2nd Floor EAST", 5, 1);
+            addNode("212", "2nd Floor EAST", 6, 1);
+            addNode("214", "2nd Floor EAST", 7, 1);
+            addNode("216", "2nd Floor EAST", 8, 1);
+            addNode("218", "2nd Floor EAST", 9, 1);
+            addNode("220", "2nd Floor EAST", 10, 1);
+
+
+            //2nd floor West
+            addNode("Stairs", "2nd Floor WEST", -1, 1);
+            addNode("201", "2nd Floor WEST", -2, 1);
+            addNode("203", "2nd Floor WEST", -3, 1);
+            addNode("205", "2nd Floor WEST", -4, 1);
+            addNode("207", "2nd Floor WEST", -5, 1);
+            addNode("209", "2nd Floor WEST", -6, 1);
+            addNode("211", "2nd Floor WEST", -7, 1);
+            addNode("213", "2nd Floor WEST", -8, 1);
+            addNode("215", "2nd Floor WEST", -9, 1);
+            addNode("217", "2nd Floor WEST", -10, 1);
+            addNode("219", "2nd Floor WEST", -11, 1);
+            addNode("202", "2nd Floor WEST", -1, -1);
+            addNode("204", "2nd Floor WEST", -2, -1);
+            addNode("206", "2nd Floor WEST", -3, -1);
+            addNode("208", "2nd Floor WEST", -4, -1);
+            addNode("210", "2nd Floor WEST", -5, -1);
+            addNode("212", "2nd Floor WEST", -6, -1);
+            addNode("214", "2nd Floor WEST", -7, -1);
+            addNode("216", "2nd Floor WEST", -8, -1);
+            addNode("218", "2nd Floor WEST", -9, -1);
+            addNode("220", "2nd Floor WEST", -10, -1);
 
             // 3rd Floor South
             addNode("311", "3rd Floor South", 0, 20);
@@ -119,6 +166,48 @@ public class Algos {
             addNode("316", "3rd Floor South", 5, 20);
             addNode("317", "3rd Floor South", 6, 20);
             addNode("318", "3rd Floor South", 7, 20);
+
+            //3rd floor EAST
+            addNode("Stairs", "3rd Floor EAST", 1, -1);
+            addNode("301", "3rd Floor EAST", 2, -1);
+            addNode("303", "3rd Floor EAST", 3, -1);
+            addNode("305", "3rd Floor EAST", 4, -1);
+            addNode("307", "3rd Floor EAST", 5, -1);
+            addNode("309", "3rd Floor EAST", 6, -1);
+            addNode("311", "3rd Floor EAST", 7, -1);
+            addNode("313", "3rd Floor EAST", 8, -1);
+            addNode("315", "3rd Floor EAST", 9, -1);
+            addNode("302", "3rd Floor EAST", 1, 1);
+            addNode("304", "3rd Floor EAST", 2, 1);
+            addNode("306", "3rd Floor EAST", 3, 1);
+            addNode("308", "3rd Floor EAST", 4, 1);
+            addNode("310", "3rd Floor EAST", 5, 1);
+            addNode("312", "3rd Floor EAST", 6, 1);
+            addNode("314", "3rd Floor EAST", 7, 1);
+            addNode("316", "3rd Floor EAST", 8, 1);
+            addNode("318", "3rd Floor EAST", 9, 1);
+
+            //3rd floor WEST
+            addNode("Stairs", "3rd Floor WEST", -1, 1);
+            addNode("301", "3rd Floor WEST", -2, 1);
+            addNode("303", "3rd Floor WEST", -3, 1);
+            addNode("305", "3rd Floor WEST", -4, 1);
+            addNode("307", "3rd Floor WEST", -5, 1);
+            addNode("309", "3rd Floor WEST", -6, 1);
+            addNode("311", "3rd Floor WEST", -7, 1);
+            addNode("313", "3rd Floor WEST", -8, 1);
+            addNode("315", "3rd Floor WEST", -9, 1);
+            addNode("317", "3rd Floor WEST", -10, 1);
+            addNode("202", "3rd Floor WEST", -1, -1);
+            addNode("204", "3rd Floor WEST", -2, -1);
+            addNode("206", "3rd Floor WEST", -3, -1);
+            addNode("208", "3rd Floor WEST", -4, -1);
+            addNode("210", "3rd Floor WEST", -5, -1);
+            addNode("212", "3rd Floor WEST", -6, -1);
+            addNode("214", "3rd Floor WEST", -7, -1);
+            addNode("216", "3rd Floor WEST", -8, -1);
+            addNode("218", "3rd Floor WEST", -9, -1);
+            addNode("220", "3rd Floor WEST", -10, -1);
 
             // 4th Floor South
             addNode("401", "4th Floor South", 0, 30);
@@ -147,6 +236,50 @@ public class Algos {
             addNode("424", "4th Floor South", 23, 30);
             addNode("425", "4th Floor South", 24, 30);
 
+            //4th Floor EAST
+            addNode("Stairs", "4th Floor EAST", 1, -1);
+            addNode("401", "4th Floor EAST", 2, -1);
+            addNode("403", "4th Floor EAST", 3, -1);
+            addNode("405", "4th Floor EAST", 4, -1);
+            addNode("407", "4th Floor EAST", 5, -1);
+            addNode("409", "4th Floor EAST", 6, -1);
+            addNode("411", "4th Floor EAST", 7, -1);
+            addNode("413", "4th Floor EAST", 8, -1);
+            addNode("415", "4th Floor EAST", 9, -1);
+            addNode("417", "4th Floor EAST", 10, -1);
+            addNode("402", "4th Floor EAST", 1, 1);
+            addNode("404", "4th Floor EAST", 2, 1);
+            addNode("406", "4th Floor EAST", 3, 1);
+            addNode("408", "4th Floor EAST", 4, 1);
+            addNode("410", "4th Floor EAST", 5, 1);
+            addNode("412", "4th Floor EAST", 6, 1);
+            addNode("414", "4th Floor EAST", 7, 1);
+            addNode("416", "4th Floor EAST", 8, 1);
+            addNode("418", "4th Floor EAST", 9, 1);
+            addNode("420", "4th Floor EAST", 10, 1);
+
+            //4th Floor WEST
+            addNode("Stairs", "4th Floor WEST", -1, 1);
+            addNode("401", "4th Floor WEST", -2, 1);
+            addNode("403", "4th Floor WEST", -3, 1);
+            addNode("405", "4th Floor WEST", -4, 1);
+            addNode("407", "4th Floor WEST", -5, 1);
+            addNode("409", "4th Floor WEST", -6, 1);
+            addNode("411", "4th Floor WEST", -7, 1);
+            addNode("413", "4th Floor WEST", -8, 1);
+            addNode("415", "4th Floor WEST", -9, 1);
+            addNode("417", "4th Floor WEST", -10, 1);
+            addNode("402", "4th Floor WEST", -1, -1);
+            addNode("404", "4th Floor WEST", -2, -1);
+            addNode("406", "4th Floor WEST", -3, -1);
+            addNode("408", "4th Floor WEST", -4, -1);
+            addNode("410", "4th Floor WEST", -5, -1);
+            addNode("412", "4th Floor WEST", -6, -1);
+            addNode("414", "4th Floor WEST", -7, -1);
+            addNode("416", "4th Floor WEST", -8, -1);
+            addNode("418", "4th Floor WEST", -9, -1);
+
+
             // 5th Floor South
             addNode("505", "5th Floor South", 0, 40);
             addNode("506", "5th Floor South", 1, 40);
@@ -157,6 +290,51 @@ public class Algos {
             addNode("516", "5th Floor South", 6, 40);
             addNode("517", "5th Floor South", 7, 40);
             addNode("518", "5th Floor South", 8, 40);
+
+            //5th Floor EAST
+            addNode("Stairs", "5th Floor EAST", 1, -1);
+            addNode("501", "5th Floor EAST", 2, -1);
+            addNode("503", "5th Floor EAST", 3, -1);
+            addNode("505", "5th Floor EAST", 4, -1);
+            addNode("507", "5th Floor EAST", 5, -1);
+            addNode("509", "5th Floor EAST", 6, -1);
+            addNode("511", "5th Floor EAST", 7, -1);
+            addNode("513", "5th Floor EAST", 8, -1);
+            addNode("515", "5th Floor EAST", 9, -1);
+            addNode("517", "5th Floor EAST", 10, -1);
+            addNode("502", "5th Floor EAST", 1, 1);
+            addNode("504", "5th Floor EAST", 2, 1);
+            addNode("506", "5th Floor EAST", 3, 1);
+            addNode("508", "5th Floor EAST", 4, 1);
+            addNode("510", "5th Floor EAST", 5, 1);
+            addNode("512", "5th Floor EAST", 6, 1);
+            addNode("514", "5th Floor EAST", 7, 1);
+            addNode("516", "5th Floor EAST", 8, 1);
+            addNode("518", "5th Floor EAST", 9, 1);
+            addNode("520", "5th Floor EAST", 10, 1);
+
+            //5th Floor WEST
+            addNode("Stairs", "5th Floor WEST", -1, 1);
+            addNode("501", "5th Floor WEST", -2, 1);
+            addNode("503", "5th Floor WEST", -3, 1);
+            addNode("505", "5th Floor WEST", -4, 1);
+            addNode("507", "5th Floor WEST", -5, 1);
+            addNode("509", "5th Floor WEST", -6, 1);
+            addNode("511", "5th Floor WEST", -7, 1);
+            addNode("513", "5th Floor WEST", -8, 1);
+            addNode("515", "5th Floor WEST", -9, 1);
+            addNode("517", "5th Floor WEST", -10, 1);
+            addNode("502", "5th Floor WEST", -1, -1);
+            addNode("504", "5th Floor WEST", -2, -1);
+            addNode("506", "5th Floor WEST", -3, -1);
+            addNode("508", "5th Floor WEST", -4, -1);
+            addNode("510", "5th Floor WEST", -5, -1);
+            addNode("512", "5th Floor WEST", -6, -1);
+            addNode("514", "5th Floor WEST", -7, -1);
+            addNode("516", "5th Floor WEST", -8, -1);
+            addNode("518", "5th Floor WEST", -9, -1);
+            addNode("520", "5th Floor WEST", -10, -1);
+
 
             // 6th Floor South
             addNode("601", "6th Floor South", 0, 50);
@@ -169,6 +347,50 @@ public class Algos {
             addNode("612", "6th Floor South", 7, 50);
             addNode("613", "6th Floor South", 8, 50);
             addNode("614", "6th Floor South", 9, 50);
+
+            //6th Floor EAST
+            addNode("Stairs", "6th Floor EAST", 1, -1);
+            addNode("601", "6th Floor EAST", 2, -1);
+            addNode("603", "5th Floor EAST", 3, -1);
+            addNode("605", "th Floor EAST", 4, -1);
+            addNode("607", "6th Floor EAST", 5, -1);
+            addNode("609", "6th Floor EAST", 6, -1);
+            addNode("611", "6th Floor EAST", 7, -1);
+            addNode("613", "6th Floor EAST", 8, -1);
+            addNode("615", "6th Floor EAST", 9, -1);
+            addNode("617", "6th Floor EAST", 10, -1);
+            addNode("602", "6th Floor EAST", 1, 1);
+            addNode("604", "6th Floor EAST", 2, 1);
+            addNode("606", "6th Floor EAST", 3, 1);
+            addNode("608", "6th Floor EAST", 4, 1);
+            addNode("610", "6th Floor EAST", 5, 1);
+            addNode("612", "6th Floor EAST", 6, 1);
+            addNode("614", "6th Floor EAST", 7, 1);
+            addNode("616", "6th Floor EAST", 8, 1);
+            addNode("618", "6th Floor EAST", 9, 1);
+            addNode("620", "6th Floor EAST", 10, 1);
+
+            //6th Floor WEST
+            addNode("Stairs", "6th Floor WEST", -1, 1);
+            addNode("601", "6th Floor WEST", -2, 1);
+            addNode("603", "6th Floor WEST", -3, 1);
+            addNode("605", "6th Floor WEST", -4, 1);
+            addNode("607", "6th Floor WEST", -5, 1);
+            addNode("609", "6th Floor WEST", -6, 1);
+            addNode("611", "6th Floor WEST", -7, 1);
+            addNode("613", "6th Floor WEST", -8, 1);
+            addNode("615", "6th Floor WEST", -9, 1);
+            addNode("617", "6th Floor WEST", -10, 1);
+            addNode("602", "6th Floor WEST", -1, -1);
+            addNode("604", "6th Floor WEST", -2, -1);
+            addNode("606", "6th Floor WEST", -3, -1);
+            addNode("608", "6th Floor WEST", -4, -1);
+            addNode("610", "6th Floor WEST", -5, -1);
+            addNode("612", "6th Floor WEST", -6, -1);
+            addNode("614", "6th Floor WEST", -7, -1);
+            addNode("616", "6th Floor WEST", -8, -1);
+            addNode("618", "6th Floor WEST", -9, -1);
+            addNode("620", "6th Floor WEST", -10, -1);
 
             // Create connections between rooms
             createConnections();
