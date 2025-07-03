@@ -6,23 +6,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import pinpoint.Algos.PathResult;
 
 public class GeneratedPath extends Application {
     private PinPointLoginSystem.User userData;
+    private Algos.PathResult pathResult;
 
-    public GeneratedPath() {
-        this.userData = null; // Default constructor
-    }
-
-    public GeneratedPath(PinPointLoginSystem.User userData) {
+    public GeneratedPath(PinPointLoginSystem.User userData, Algos.PathResult pathResult) {
         this.userData = userData;
+        this.pathResult = pathResult;
     }
 
     @Override
@@ -31,43 +33,226 @@ public class GeneratedPath extends Application {
         mainContainer.setPrefSize(400, 600);
         mainContainer.setStyle("-fx-background-color: #F8F8F8;");
 
-        // Header
+        // Header with Back Button
+        HBox headerBox = new HBox();
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+        headerBox.setSpacing(10);
+        headerBox.setPadding(new Insets(20, 0, 20, 0));
+        headerBox.setStyle("-fx-background-color: white;");
+
+        Button backButton = new Button("← Back");
+        backButton.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        backButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #800000; -fx-cursor: hand;");
+        backButton.setOnAction(e -> {
+            // Go back to Location selection
+            try {
+                new Location(userData).start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         Label headerLabel = new Label("Generated Path");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         headerLabel.setAlignment(Pos.CENTER);
-        headerLabel.setPadding(new Insets(20, 0, 20, 0));
-        headerLabel.setStyle("-fx-background-color: white;");
         headerLabel.setMaxWidth(Double.MAX_VALUE);
-        BorderPane.setAlignment(headerLabel, Pos.CENTER);
 
-        // Map container
-        VBox mapContainer = new VBox();
-        mapContainer.setAlignment(Pos.CENTER);
-        mapContainer.setStyle("-fx-background-color: white;");
-        mapContainer.setPrefHeight(300);
-        Rectangle mapPlaceholderIcon = new Rectangle(40, 40);
-        mapPlaceholderIcon.setFill(Color.LIGHTGRAY);
-        mapPlaceholderIcon.setStroke(Color.GRAY);
-        mapPlaceholderIcon.setStrokeWidth(2);
-        mapPlaceholderIcon.setArcHeight(5);
-        mapPlaceholderIcon.setArcWidth(5);
-        mapContainer.getChildren().add(mapPlaceholderIcon);
+        Region leftSpacer = new Region();
+        Region rightSpacer = new Region();
+        HBox.setHgrow(leftSpacer, Priority.ALWAYS);
+        HBox.setHgrow(rightSpacer, Priority.ALWAYS);
 
-        // Description section
-        VBox descriptionContainer = new VBox();
-        descriptionContainer.setAlignment(Pos.CENTER);
-        descriptionContainer.setStyle("-fx-background-color: #f0e6d2;");
-        descriptionContainer.setPadding(new Insets(20));
-        descriptionContainer.setPrefHeight(120);
-        Label descriptionLabel = new Label("Detailed Path Description");
-        descriptionLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-        descriptionLabel.setTextFill(Color.web("#8B4513"));
-        descriptionContainer.getChildren().add(descriptionLabel);
+        headerBox.getChildren().addAll(backButton, leftSpacer, headerLabel, rightSpacer);
+
+        // Map container with path visualization
+        VBox mapContainer = createMapContainer();
+
+        // Description section with path details
+        ScrollPane descriptionContainer = createDescriptionContainer();
 
         VBox centerContainer = new VBox(mapContainer, descriptionContainer);
-        VBox.setVgrow(mapContainer, Priority.ALWAYS);
+        VBox.setVgrow(descriptionContainer, Priority.ALWAYS);
 
         // Bottom navigation bar
+        HBox bottomNav = createBottomNavigation(primaryStage);
+
+        // Add to BorderPane
+        mainContainer.setTop(headerBox);
+        mainContainer.setCenter(centerContainer);
+        mainContainer.setBottom(bottomNav);
+
+        Scene scene = new Scene(mainContainer, 375, 667);
+        primaryStage.setTitle("Generated Path");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
+    private VBox createMapContainer() {
+        VBox mapContainer = new VBox();
+        mapContainer.setAlignment(Pos.CENTER);
+        mapContainer.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 1;");
+        mapContainer.setPrefHeight(200);
+        mapContainer.setPadding(new Insets(15));
+
+        if (pathResult != null && !pathResult.getPath().isEmpty()) {
+            // Display path summary
+            VBox pathSummary = new VBox(5);
+            pathSummary.setAlignment(Pos.CENTER);
+
+            Label fromLabel = new Label("From: " + pathResult.getPath().get(0).name);
+            fromLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            fromLabel.setTextFill(Color.web("#2E7D32"));
+
+            Label toLabel = new Label("To: " + pathResult.getPath().get(pathResult.getPath().size() - 1).name);
+            toLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            toLabel.setTextFill(Color.web("#D32F2F"));
+
+            Label algorithmLabel = new Label("Algorithm: " + pathResult.getAlgorithm());
+            algorithmLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            algorithmLabel.setTextFill(Color.web("#1976D2"));
+
+            Label distanceLabel = new Label(String.format("Distance: %.2f units", pathResult.getTotalDistance()));
+            distanceLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            distanceLabel.setTextFill(Color.web("#FF8F00"));
+
+            Label timeLabel = new Label("Execution Time: " + pathResult.getExecutionTime() + " ms");
+            timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            timeLabel.setTextFill(Color.web("#7B1FA2"));
+
+            // Visual path representation
+            Rectangle pathVisual = new Rectangle(280, 40);
+            pathVisual.setFill(Color.web("#E3F2FD"));
+            pathVisual.setStroke(Color.web("#1976D2"));
+            pathVisual.setStrokeWidth(2);
+            pathVisual.setArcHeight(10);
+            pathVisual.setArcWidth(10);
+
+            StackPane pathVisualization = new StackPane(pathVisual);
+
+            pathSummary.getChildren().addAll(fromLabel, toLabel, algorithmLabel,
+                    distanceLabel, timeLabel, pathVisualization);
+            mapContainer.getChildren().add(pathSummary);
+        } else {
+            // Display placeholder when no path is available
+            Rectangle mapPlaceholderIcon = new Rectangle(40, 40);
+            mapPlaceholderIcon.setFill(Color.LIGHTGRAY);
+            mapPlaceholderIcon.setStroke(Color.GRAY);
+            mapPlaceholderIcon.setStrokeWidth(2);
+            mapPlaceholderIcon.setArcHeight(5);
+            mapPlaceholderIcon.setArcWidth(5);
+
+            Label noPathLabel = new Label("No path data available");
+            noPathLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            noPathLabel.setTextFill(Color.GRAY);
+
+            VBox placeholder = new VBox(10, mapPlaceholderIcon, noPathLabel);
+            placeholder.setAlignment(Pos.CENTER);
+            mapContainer.getChildren().add(placeholder);
+        }
+
+        return mapContainer;
+    }
+
+    private ScrollPane createDescriptionContainer() {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setStyle("-fx-background-color: #f0e6d2;");
+        scrollPane.setPrefHeight(200);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        VBox descriptionContainer = new VBox();
+        descriptionContainer.setPadding(new Insets(15));
+        descriptionContainer.setSpacing(10);
+
+        if (pathResult != null && !pathResult.getPath().isEmpty()) {
+            // Title
+            Label titleLabel = new Label("Step-by-Step Directions");
+            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            titleLabel.setTextFill(Color.web("#5D4037"));
+
+            // Algorithm info
+            Label algorithmInfo = new Label("Using " + pathResult.getAlgorithm() + " Algorithm");
+            algorithmInfo.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            algorithmInfo.setTextFill(Color.web("#8B4513"));
+            algorithmInfo.setStyle("-fx-font-style: italic;");
+
+            descriptionContainer.getChildren().addAll(titleLabel, algorithmInfo);
+
+            // Path steps
+            for (int i = 0; i < pathResult.getPath().size(); i++) {
+                Algos.Node node = pathResult.getPath().get(i);
+
+                HBox stepContainer = new HBox(10);
+                stepContainer.setAlignment(Pos.CENTER_LEFT);
+
+                // Step number
+                Label stepNumber = new Label(String.valueOf(i + 1));
+                stepNumber.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                stepNumber.setTextFill(Color.WHITE);
+                stepNumber.setStyle("-fx-background-color: #8B4513; -fx-background-radius: 15;");
+                stepNumber.setPrefSize(25, 25);
+                stepNumber.setAlignment(Pos.CENTER);
+
+                // Step description
+                VBox stepInfo = new VBox(2);
+                Label roomLabel = new Label(node.name);
+                roomLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+                roomLabel.setTextFill(Color.web("#3E2723"));
+
+                Label floorLabel = new Label(node.floor);
+                floorLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 11));
+                floorLabel.setTextFill(Color.web("#8B4513"));
+
+                stepInfo.getChildren().addAll(roomLabel, floorLabel);
+
+                // Add arrow for non-last steps
+                if (i < pathResult.getPath().size() - 1) {
+                    Label arrow = new Label("↓");
+                    arrow.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                    arrow.setTextFill(Color.web("#8B4513"));
+                    stepInfo.getChildren().add(arrow);
+                }
+
+                stepContainer.getChildren().addAll(stepNumber, stepInfo);
+                descriptionContainer.getChildren().add(stepContainer);
+            }
+
+            // Summary
+            VBox summaryBox = new VBox(5);
+            summaryBox.setStyle("-fx-background-color: rgba(139, 69, 19, 0.1); -fx-background-radius: 8;");
+            summaryBox.setPadding(new Insets(10));
+
+            Label summaryTitle = new Label("Path Summary");
+            summaryTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            summaryTitle.setTextFill(Color.web("#5D4037"));
+
+            Text summaryText = new Text(String.format(
+                    "• Total Distance: %.2f units\n• Execution Time: %d ms\n• Algorithm Used: %s",
+                    pathResult.getTotalDistance(),
+                    pathResult.getExecutionTime(),
+                    pathResult.getAlgorithm()));
+            summaryText.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            summaryText.setFill(Color.web("#8B4513"));
+
+            summaryBox.getChildren().addAll(summaryTitle, summaryText);
+            descriptionContainer.getChildren().add(summaryBox);
+
+        } else {
+            Label noPathLabel = new Label("No path found or invalid locations provided.");
+            noPathLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+            noPathLabel.setTextFill(Color.web("#8B4513"));
+            noPathLabel.setWrapText(true);
+            noPathLabel.setTextAlignment(TextAlignment.CENTER);
+            descriptionContainer.getChildren().add(noPathLabel);
+        }
+
+        scrollPane.setContent(descriptionContainer);
+        return scrollPane;
+    }
+
+    private HBox createBottomNavigation(Stage primaryStage) {
         HBox bottomNav = new HBox();
         bottomNav.setPrefHeight(80);
         bottomNav.setStyle("-fx-background-color: #800000;");
@@ -160,16 +345,7 @@ public class GeneratedPath extends Application {
             }
         });
 
-        // Add to BorderPane
-        mainContainer.setTop(headerLabel);
-        mainContainer.setCenter(centerContainer);
-        mainContainer.setBottom(bottomNav);
-
-        Scene scene = new Scene(mainContainer, 375, 667);
-        primaryStage.setTitle("Generated Path");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        return bottomNav;
     }
 
     public static void main(String[] args) {

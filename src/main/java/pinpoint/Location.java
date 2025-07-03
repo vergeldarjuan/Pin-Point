@@ -4,173 +4,284 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Location extends Application {
     private PinPointLoginSystem.User userData;
+    private ComboBox<String> currentLocationCombo;
+    private ComboBox<String> destinationCombo;
+    private ComboBox<String> algorithmCombo;
+    private Button startButton;
+    private Algos.BuildingGraph buildingGraph;
 
     public Location(PinPointLoginSystem.User userData) {
         this.userData = userData;
+        this.buildingGraph = new Algos.BuildingGraph();
     }
 
     @Override
     public void start(Stage primaryStage) {
-        // Main container
         BorderPane mainContainer = new BorderPane();
         mainContainer.setPrefSize(400, 600);
         mainContainer.setStyle("-fx-background-color: #F8F8F8;");
 
-        // Main content area
-        VBox contentArea = new VBox();
-        contentArea.setPadding(new Insets(40, 30, 40, 30));
-        contentArea.setSpacing(25);
-        contentArea.setAlignment(Pos.TOP_CENTER);
+        // Header
+        Label headerLabel = new Label("Find Your Route");
+        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        headerLabel.setAlignment(Pos.CENTER);
+        headerLabel.setPadding(new Insets(20, 0, 20, 0));
+        headerLabel.setStyle("-fx-background-color: white; -fx-text-fill: #800000;");
+        headerLabel.setMaxWidth(Double.MAX_VALUE);
 
-        // Title
-        Label title = new Label("Track Destination");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 28));
-        title.setTextFill(Color.web("#333333"));
-        title.setAlignment(Pos.CENTER);
+        // Main content
+        VBox contentContainer = new VBox(20);
+        contentContainer.setPadding(new Insets(30, 20, 30, 20));
+        contentContainer.setAlignment(Pos.CENTER);
+        contentContainer.setStyle("-fx-background-color: white;");
 
-        // Current location section
-        VBox currentLocationSection = new VBox();
-        currentLocationSection.setSpacing(8);
+        // Get all room names from the building graph
+        ObservableList<String> roomNames = FXCollections.observableArrayList();
+        roomNames.addAll(buildingGraph.getAllRoomNames());
+        roomNames.sort(String::compareTo);
 
-        Label currentLocationLabel = new Label("Enter current location");
-        currentLocationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
-        currentLocationLabel.setTextFill(Color.web("#333333"));
+        // Current Location Section
+        VBox currentLocationSection = new VBox(10);
+        currentLocationSection.setAlignment(Pos.CENTER_LEFT);
 
-        TextField currentLocationField = new TextField();
-        currentLocationField.setPrefHeight(45);
-        currentLocationField.setStyle(
+        Label currentLocationLabel = new Label("Current Location:");
+        currentLocationLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        currentLocationLabel.setTextFill(Color.web("#800000"));
+
+        currentLocationCombo = new ComboBox<>(roomNames);
+        currentLocationCombo.setPromptText("Select your current location");
+        currentLocationCombo.setPrefWidth(320);
+        currentLocationCombo.setPrefHeight(45);
+        currentLocationCombo.setStyle(
                 "-fx-background-color: white; " +
                         "-fx-border-color: #800000; " +
                         "-fx-border-width: 2; " +
                         "-fx-border-radius: 8; " +
                         "-fx-background-radius: 8; " +
-                        "-fx-padding: 10; " +
-                        "-fx-font-size: 14px;");
+                        "-fx-font-size: 14px; " +
+                        "-fx-cursor: hand;");
+        currentLocationCombo.setEditable(false); // FIX: Only allow selection from list
 
-        currentLocationSection.getChildren().addAll(currentLocationLabel, currentLocationField);
+        currentLocationSection.getChildren().addAll(currentLocationLabel, currentLocationCombo);
 
-        // Destination location section
-        VBox destinationSection = new VBox();
-        destinationSection.setSpacing(8);
+        // Destination Section
+        VBox destinationSection = new VBox(10);
+        destinationSection.setAlignment(Pos.CENTER_LEFT);
 
-        Label destinationLabel = new Label("Enter destination location");
-        destinationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
-        destinationLabel.setTextFill(Color.web("#333333"));
+        Label destinationLabel = new Label("Destination:");
+        destinationLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        destinationLabel.setTextFill(Color.web("#800000"));
 
-        TextField destinationField = new TextField();
-        destinationField.setPrefHeight(45);
-        destinationField.setStyle(
+        destinationCombo = new ComboBox<>(roomNames);
+        destinationCombo.setPromptText("Select your destination");
+        destinationCombo.setPrefWidth(320);
+        destinationCombo.setPrefHeight(45);
+        destinationCombo.setStyle(
                 "-fx-background-color: white; " +
                         "-fx-border-color: #800000; " +
                         "-fx-border-width: 2; " +
                         "-fx-border-radius: 8; " +
                         "-fx-background-radius: 8; " +
-                        "-fx-padding: 10; " +
-                        "-fx-font-size: 14px;");
+                        "-fx-font-size: 14px; " +
+                        "-fx-cursor: hand;");
+        destinationCombo.setEditable(false); // FIX: Only allow selection from list
 
-        destinationSection.getChildren().addAll(destinationLabel, destinationField);
+        destinationSection.getChildren().addAll(destinationLabel, destinationCombo);
 
-        // Start button
-        Button startButton = new Button("Start");
-        startButton.setPrefWidth(100);
-        startButton.setPrefHeight(40);
-        startButton.setAlignment(Pos.CENTER);
+        // Algorithm Selection Section
+        VBox algorithmSection = new VBox(10);
+        algorithmSection.setAlignment(Pos.CENTER_LEFT);
+
+        Label algorithmLabel = new Label("Pathfinding Algorithm:");
+        algorithmLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        algorithmLabel.setTextFill(Color.web("#800000"));
+
+        algorithmCombo = new ComboBox<>();
+        algorithmCombo.getItems().addAll("A*", "Dijkstra");
+        algorithmCombo.setValue("A*"); // Default selection
+        algorithmCombo.setPrefWidth(320);
+        algorithmCombo.setPrefHeight(45);
+        algorithmCombo.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-border-color: #800000; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-border-radius: 8; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-cursor: hand;");
+
+        algorithmSection.getChildren().addAll(algorithmLabel, algorithmCombo);
+
+        // Algorithm description
+        Label algorithmDescription = new Label();
+        algorithmDescription.setFont(Font.font("Arial", 12));
+        algorithmDescription.setTextFill(Color.web("#666666"));
+        algorithmDescription.setWrapText(true);
+        algorithmDescription.setMaxWidth(320);
+        algorithmDescription.setPadding(new Insets(0, 0, 10, 0));
+
+        // Update description based on selected algorithm
+        algorithmCombo.setOnAction(e -> {
+            String selected = algorithmCombo.getValue();
+            if ("A*".equals(selected)) {
+                algorithmDescription.setText(
+                        "A* Algorithm: Uses heuristics to find the optimal path faster. Best for most navigation scenarios.");
+            } else {
+                algorithmDescription.setText(
+                        "Dijkstra's Algorithm: Explores all possible paths systematically. Guarantees shortest path but may be slower.");
+            }
+        });
+        // FIX: Set initial description after setting default value
+        algorithmCombo.getOnAction().handle(null);
+
+        // Start Button
+        startButton = new Button("Find Route");
+        startButton.setPrefWidth(320);
+        startButton.setPrefHeight(50);
+        startButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         startButton.setStyle(
                 "-fx-background-color: #800000; " +
                         "-fx-text-fill: white; " +
-                        "-fx-font-family: Arial; " +
-                        "-fx-font-size: 16px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 20; " +
-                        "-fx-border-radius: 20; " +
-                        "-fx-cursor: hand;");
+                        "-fx-background-radius: 25; " +
+                        "-fx-cursor: hand; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);");
 
-        // Center the start button
-        HBox startButtonContainer = new HBox();
-        startButtonContainer.setAlignment(Pos.CENTER);
-        startButtonContainer.getChildren().add(startButton);
-        startButton.setOnAction(e -> {
-            // Switch to Map
-            try {
-                new GeneratedPath().start(primaryStage);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        startButton.setOnAction(e -> findRoute(primaryStage));
+
+        // Add hover effects
+        startButton.setOnMouseEntered(e -> {
+            startButton.setStyle(
+                    "-fx-background-color: #a00000; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-background-radius: 25; " +
+                            "-fx-cursor: hand; " +
+                            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);");
         });
 
-        // Add some spacing before the bottom section
-        Region spacer = new Region();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
+        startButton.setOnMouseExited(e -> {
+            startButton.setStyle(
+                    "-fx-background-color: #800000; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-background-radius: 25; " +
+                            "-fx-cursor: hand; " +
+                            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);");
+        });
 
-        // Bottom info section
-        VBox bottomInfoSection = new VBox();
-        bottomInfoSection.setAlignment(Pos.CENTER);
-        bottomInfoSection.setSpacing(15);
-        bottomInfoSection.setPadding(new Insets(0, 0, 60, 0));
-
-        // Map icon
-        Region mapLocationIcon = createMapLocationIcon();
-
-        // Info text
-        Text infoText1 = new Text("To view the full PUP Main Building map,");
-        infoText1.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-        infoText1.setFill(Color.web("#666666"));
-        infoText1.setTextAlignment(TextAlignment.CENTER);
-
-        Text infoText2 = new Text("proceed to the \"map\" section");
-        infoText2.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-        infoText2.setFill(Color.web("#666666"));
-        infoText2.setTextAlignment(TextAlignment.CENTER);
-
-        VBox infoTextContainer = new VBox();
-        infoTextContainer.setAlignment(Pos.CENTER);
-        infoTextContainer.setSpacing(2);
-        infoTextContainer.getChildren().addAll(infoText1, infoText2);
-
-        bottomInfoSection.getChildren().addAll(mapLocationIcon, infoTextContainer);
-
-        // Add all sections to content area
-        contentArea.getChildren().addAll(
-                title,
+        contentContainer.getChildren().addAll(
                 currentLocationSection,
                 destinationSection,
-                startButtonContainer,
-                spacer,
-                bottomInfoSection);
+                algorithmSection,
+                algorithmDescription,
+                startButton);
 
-        // Bottom navigation bar
+        // Bottom Navigation
+        HBox bottomNav = createBottomNavigation(primaryStage);
+
+        mainContainer.setTop(headerLabel);
+        mainContainer.setCenter(contentContainer);
+        mainContainer.setBottom(bottomNav);
+
+        Scene scene = new Scene(mainContainer, 375, 667);
+        primaryStage.setTitle("Location Navigation");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
+    private void findRoute(Stage primaryStage) {
+        String currentLocation = currentLocationCombo.getValue();
+        String destination = destinationCombo.getValue();
+        String algorithm = algorithmCombo.getValue();
+
+        // Validate inputs
+        if (currentLocation == null || currentLocation.trim().isEmpty()) {
+            showAlert("Error", "Please select your current location.");
+            return;
+        }
+
+        if (destination == null || destination.trim().isEmpty()) {
+            showAlert("Error", "Please select your destination.");
+            return;
+        }
+
+        if (currentLocation.equals(destination)) {
+            showAlert("Error", "Current location and destination cannot be the same.");
+            return;
+        }
+
+        // Check if the locations exist in the building graph
+        if (buildingGraph.getNode(currentLocation) == null) {
+            showAlert("Error", "Current location '" + currentLocation + "' not found in the building.");
+            return;
+        }
+
+        if (buildingGraph.getNode(destination) == null) {
+            showAlert("Error", "Destination '" + destination + "' not found in the building.");
+            return;
+        }
+
+        try {
+            // Find the path using the selected algorithm
+            Algos.PathResult pathResult = Algos.findOptimalPath(currentLocation, destination, algorithm);
+
+            if (pathResult.getPath().isEmpty()) {
+                showAlert("No Route Found", "No path could be found between the specified locations.");
+                return;
+            }
+
+            // Navigate to GeneratedPath with the result
+            GeneratedPath generatedPath = new GeneratedPath(userData, pathResult);
+            generatedPath.start(primaryStage);
+
+        } catch (Exception ex) {
+            showAlert("Error", "An error occurred while finding the route: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private HBox createBottomNavigation(Stage primaryStage) {
         HBox bottomNav = new HBox();
         bottomNav.setPrefHeight(80);
         bottomNav.setStyle("-fx-background-color: #800000;");
         bottomNav.setAlignment(Pos.CENTER);
         bottomNav.setSpacing(60);
 
-        // --- Navigation icons with color change and navigation ---
-
-        // Home icon SVGPath
+        // Create SVG icons
         SVGPath homeIconSVG = new SVGPath();
         homeIconSVG.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
         homeIconSVG.setFill(Color.WHITE);
         homeIconSVG.setScaleX(1.5);
         homeIconSVG.setScaleY(1.5);
         StackPane homeIcon = new StackPane(homeIconSVG);
-        homeIcon.setPrefSize(30, 30);
 
-        // Map icon SVGPath
+        SVGPath starIconSVG = new SVGPath();
+        starIconSVG.setContent(
+                "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z");
+        starIconSVG.setFill(Color.web("#FFD700")); // Star is selected
+        starIconSVG.setScaleX(1.2);
+        starIconSVG.setScaleY(1.2);
+        StackPane starIcon = new StackPane(starIconSVG);
+
         SVGPath mapIconSVG = new SVGPath();
         mapIconSVG.setContent(
                 "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
@@ -178,9 +289,7 @@ public class Location extends Application {
         mapIconSVG.setScaleX(1.2);
         mapIconSVG.setScaleY(1.2);
         StackPane mapIcon = new StackPane(mapIconSVG);
-        mapIcon.setPrefSize(30, 30);
 
-        // Profile icon SVGPath
         SVGPath profileIconSVG = new SVGPath();
         profileIconSVG.setContent(
                 "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
@@ -188,39 +297,21 @@ public class Location extends Application {
         profileIconSVG.setScaleX(1.2);
         profileIconSVG.setScaleY(1.2);
         StackPane profileIcon = new StackPane(profileIconSVG);
-        profileIcon.setPrefSize(30, 30);
 
-        // Star icon (no color change needed)
-        Button starButton = new Button();
-        starButton.setGraphic(createStarIcon());
-        starButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-        starButton.setPrefSize(30, 30);
+        // Create buttons
+        Button homeButton = new Button("", homeIcon);
+        Button starButton = new Button("", starIcon);
+        Button mapButton = new Button("", mapIcon);
+        Button profileButton = new Button("", profileIcon);
 
-        // Navigation buttons
-        Button homeButton = new Button();
-        homeButton.setGraphic(homeIcon);
-        homeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-        homeButton.setPrefSize(30, 30);
+        // Style buttons
+        for (Button btn : new Button[] { homeButton, starButton, mapButton, profileButton }) {
+            btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+            btn.setPrefSize(30, 30);
+        }
 
-        Button mapButton = new Button();
-        mapButton.setGraphic(mapIcon);
-        mapButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-        mapButton.setPrefSize(30, 30);
-
-        Button profileButton = new Button();
-        profileButton.setGraphic(profileIcon);
-        profileButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-        profileButton.setPrefSize(30, 30);
-
-        bottomNav.getChildren().setAll(homeButton, starButton, mapButton, profileButton);
-
-        // --- Navigation actions ---
-
+        // Add navigation actions
         homeButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.web("#FFD700")); // Home yellow
-            mapIconSVG.setFill(Color.WHITE); // Map white
-            profileIconSVG.setFill(Color.WHITE); // Profile white
-            // Switch to HomePage
             try {
                 new HomePage(userData).start(primaryStage);
             } catch (Exception ex) {
@@ -229,10 +320,6 @@ public class Location extends Application {
         });
 
         mapButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.WHITE); // Home white
-            mapIconSVG.setFill(Color.web("#FFD700")); // Map yellow
-            profileIconSVG.setFill(Color.WHITE); // Profile white
-            // Switch to Map
             try {
                 new Map(userData).start(primaryStage);
             } catch (Exception ex) {
@@ -240,102 +327,20 @@ public class Location extends Application {
             }
         });
 
-        // Profile button
         profileButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.WHITE); // Home white
-            mapIconSVG.setFill(Color.WHITE); // Map white
-            profileIconSVG.setFill(Color.web("#FFD700")); // Profile yellow
-
-            // Switch to UserProfile
             try {
-                new User(userData).start(primaryStage);
+                if (userData != null) {
+                    new User(userData).start(primaryStage);
+                } else {
+                    System.out.println("User data is null - cannot navigate to User profile");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
 
-        // Set up the main layouts
-        mainContainer.setCenter(contentArea);
-        mainContainer.setBottom(bottomNav);
-
-        Scene scene = new Scene(mainContainer, 375, 667);
-        primaryStage.setTitle("Location");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    private Region createMapLocationIcon() {
-        SVGPath mapLocationIcon = new SVGPath();
-        mapLocationIcon.setContent(
-                "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z M9 21h6v2H9v-2z M7 19h10v2H7v-2z");
-        mapLocationIcon.setFill(Color.web("#800000"));
-        mapLocationIcon.setScaleX(2.5);
-        mapLocationIcon.setScaleY(2.5);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(mapLocationIcon);
-        container.setPrefSize(60, 60);
-        container.setAlignment(Pos.CENTER);
-
-        return container;
-    }
-
-    private Region createHomeIcon() {
-        SVGPath homeIcon = new SVGPath();
-        homeIcon.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
-        homeIcon.setFill(Color.WHITE);
-        homeIcon.setScaleX(1.5);
-        homeIcon.setScaleY(1.5);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(homeIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
-    private Region createStarIcon() {
-        SVGPath starIcon = new SVGPath();
-        starIcon.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
-        starIcon.setFill(Color.web("#FFDF00"));
-        starIcon.setScaleX(1.2);
-        starIcon.setScaleY(1.2);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(starIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
-    private Region createMapIcon() {
-        SVGPath mapIcon = new SVGPath();
-        mapIcon.setContent(
-                "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapIcon.setFill(Color.WHITE);
-        mapIcon.setScaleX(1.2);
-        mapIcon.setScaleY(1.2);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(mapIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
-    }
-
-    private Region createProfileIcon() {
-        SVGPath profileIcon = new SVGPath();
-        profileIcon.setContent(
-                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
-        profileIcon.setFill(Color.WHITE);
-        profileIcon.setScaleX(1.2);
-        profileIcon.setScaleY(1.2);
-
-        StackPane container = new StackPane();
-        container.getChildren().add(profileIcon);
-        container.setPrefSize(30, 30);
-
-        return container;
+        bottomNav.getChildren().addAll(homeButton, starButton, mapButton, profileButton);
+        return bottomNav;
     }
 
     public static void main(String[] args) {
