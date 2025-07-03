@@ -34,8 +34,7 @@ public class Map extends Application {
 
         ComboBox<String> floorSelector = new ComboBox<>();
         floorSelector.getItems().addAll(
-                "1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor"
-        );
+                "1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor");
         floorSelector.setValue("1st Floor");
         floorSelector.setPrefWidth(160);
         floorSelector.setPrefHeight(35);
@@ -46,8 +45,8 @@ public class Map extends Application {
                         "-fx-font-size: 14px; " +
                         "-fx-font-weight: bold; " +
                         "-fx-background-radius: 18; " +
-                        "-fx-border-radius: 18;"
-        );
+                        "-fx-border-radius: 18;" +
+                        "-fx-cursor: hand;");
 
         javafx.util.Callback<javafx.scene.control.ListView<String>, javafx.scene.control.ListCell<String>> cellFactory = lv -> new javafx.scene.control.ListCell<String>() {
             @Override
@@ -66,9 +65,10 @@ public class Map extends Application {
         floorSelector.setCellFactory(cellFactory);
         floorSelector.setButtonCell(cellFactory.call(null));
 
-        // 🔴 Legend Button
+        // Legend Button
         Button legendButton = new Button("Legend");
-        legendButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;");
+        legendButton.setStyle(
+                "-fx-background-color: #800000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx.cursor: hand;");
         legendButton.setPadding(new Insets(5, 15, 5, 15));
         legendButton.setOnAction(e -> RoomNames());
 
@@ -108,14 +108,16 @@ public class Map extends Application {
         StackPane homeIcon = new StackPane(homeIconSVG);
 
         SVGPath mapIconSVG = new SVGPath();
-        mapIconSVG.setContent("M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
+        mapIconSVG.setContent(
+                "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
         mapIconSVG.setFill(Color.web("#FFD700"));
         mapIconSVG.setScaleX(1.2);
         mapIconSVG.setScaleY(1.2);
         StackPane mapIcon = new StackPane(mapIconSVG);
 
         SVGPath profileIconSVG = new SVGPath();
-        profileIconSVG.setContent("M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
+        profileIconSVG.setContent(
+                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
         profileIconSVG.setFill(Color.WHITE);
         profileIconSVG.setScaleX(1.2);
         profileIconSVG.setScaleY(1.2);
@@ -219,16 +221,17 @@ public class Map extends Application {
         legendText.setWrapText(true);
         legendText.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 13px;");
         legendText.setText(
-                " 6th Floor South:\n601 - CAL Dean\n602 - CPSPA Grad\n603 - CPSPA\n604 - Education Grad\n605 - CBA Grad\n607 - CAL Chair\n610 - Data & Stats\n612 - CSSD Chair\n613 - CSSD Dean\n614 - Psych Lab\n\n" +
-                        " 5th Floor South:\n505 - Consultation\n506 - CCIS Faculty\n507 - Lab Ops\n512 - Dean Office\n514 - Science Faculty\n515 - Math & Stats\n516 - Comp Lab\n517 - Unknown\n518 - Accountancy\n\n" +
+                " 6th Floor South:\n601 - CAL Dean\n602 - CPSPA Grad\n603 - CPSPA\n604 - Education Grad\n605 - CBA Grad\n607 - CAL Chair\n610 - Data & Stats\n612 - CSSD Chair\n613 - CSSD Dean\n614 - Psych Lab\n\n"
+                        +
+                        " 5th Floor South:\n505 - Consultation\n506 - CCIS Faculty\n507 - Lab Ops\n512 - Dean Office\n514 - Science Faculty\n515 - Math & Stats\n516 - Comp Lab\n517 - Unknown\n518 - Accountancy\n\n"
+                        +
                         " 4th Floor South:\n401–425 - Research, Language, Gender, Innovation\n\n" +
                         " 3rd Floor South:\n311–318 - Admin, Planning, Legal, Intl, HR\n\n" +
                         " 2nd Floor South:\n202–215 - President, VPs, Server Room\n\n" +
                         " 1st Floor South:\n101–109 - Accounting, Budget, Registrar\n\n" +
                         " 2nd Floor East:\n201–208 - DCSD, NSTP, Faculty\n\n" +
                         " 1st Floor East:\n101, DMST, CCHQ, Clinic, Facilities\n\n" +
-                        " 1st Floor West:\nAdmission & Registration"
-        );
+                        " 1st Floor West:\nAdmission & Registration");
 
         ScrollPane scrollPane = new ScrollPane(legendText);
         scrollPane.setFitToWidth(true);
