@@ -33,12 +33,10 @@ public class GeneratedPath extends Application {
         mainContainer.setPrefSize(400, 600);
         mainContainer.setStyle("-fx-background-color: #F8F8F8;");
 
-        // Header with Back Button
-        HBox headerBox = new HBox();
-        headerBox.setAlignment(Pos.CENTER_LEFT);
-        headerBox.setSpacing(10);
-        headerBox.setPadding(new Insets(20, 0, 20, 0));
-        headerBox.setStyle("-fx-background-color: white;");
+        // Header with Back Button and Centered Title
+        StackPane headerPane = new StackPane();
+        headerPane.setPrefHeight(60);
+        headerPane.setStyle("-fx-background-color: white;");
 
         Button backButton = new Button("← Back");
         backButton.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
@@ -55,14 +53,11 @@ public class GeneratedPath extends Application {
         Label headerLabel = new Label("Generated Path");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         headerLabel.setAlignment(Pos.CENTER);
-        headerLabel.setMaxWidth(Double.MAX_VALUE);
 
-        Region leftSpacer = new Region();
-        Region rightSpacer = new Region();
-        HBox.setHgrow(leftSpacer, Priority.ALWAYS);
-        HBox.setHgrow(rightSpacer, Priority.ALWAYS);
+        StackPane.setAlignment(backButton, Pos.CENTER_LEFT);
+        StackPane.setAlignment(headerLabel, Pos.CENTER);
 
-        headerBox.getChildren().addAll(backButton, leftSpacer, headerLabel, rightSpacer);
+        headerPane.getChildren().addAll(headerLabel, backButton);
 
         // Map container with path visualization
         VBox mapContainer = createMapContainer();
@@ -77,7 +72,7 @@ public class GeneratedPath extends Application {
         HBox bottomNav = createBottomNavigation(primaryStage);
 
         // Add to BorderPane
-        mainContainer.setTop(headerBox);
+        mainContainer.setTop(headerPane);
         mainContainer.setCenter(centerContainer);
         mainContainer.setBottom(bottomNav);
 
@@ -128,7 +123,37 @@ public class GeneratedPath extends Application {
             pathVisual.setArcHeight(10);
             pathVisual.setArcWidth(10);
 
-            StackPane pathVisualization = new StackPane(pathVisual);
+            // --- Travel Time Calculation ---
+            // Get total distance and validate
+            double totalDistance = pathResult.getTotalDistance(); // assume meters
+            if (totalDistance <= 0) {
+                // Handle invalid distance case
+                Label errorLabel = new Label("Unable to calculate travel time: Invalid path distance");
+                errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                errorLabel.setTextFill(Color.web("#D32F2F")); // Red color for error
+
+                StackPane pathVisualization = new StackPane(pathVisual, errorLabel);
+                pathSummary.getChildren().addAll(fromLabel, toLabel, algorithmLabel,
+                        distanceLabel, timeLabel, pathVisualization);
+                mapContainer.getChildren().add(pathSummary);
+                return pathSummary;
+            }
+
+            // Walking speed configuration
+            double walkingSpeed = 0.3;
+
+            // Calculate travel time in minutes
+            double travelTimeSeconds = totalDistance / walkingSpeed;
+            long travelTimeMinutes = Math.round(travelTimeSeconds / 60.0);
+
+            // Create travel time label
+            String travelTimeText = String.format("Travel Time: %d minutes", travelTimeMinutes);
+            Label travelTimeLabel = new Label(travelTimeText);
+            travelTimeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            travelTimeLabel.setTextFill(Color.web("#1976D2"));
+
+            // Center travel time label in the blue box
+            StackPane pathVisualization = new StackPane(pathVisual, travelTimeLabel);
 
             pathSummary.getChildren().addAll(fromLabel, toLabel, algorithmLabel,
                     distanceLabel, timeLabel, pathVisualization);
