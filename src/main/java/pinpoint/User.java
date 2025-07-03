@@ -57,20 +57,20 @@ public class User extends Application {
         profileContainer.setPrefSize(120, 120);
 
         // Rectangle border
-        Rectangle borderRect = new Rectangle(120, 120);
+        Rectangle borderRect = new Rectangle(300, 120);
         borderRect.setArcWidth(20);
         borderRect.setArcHeight(20);
         borderRect.setFill(Color.TRANSPARENT);
-        borderRect.setStroke(Color.web("#E0E0E0"));
+        borderRect.setStroke(Color.web("#800000"));
         borderRect.setStrokeWidth(3);
 
         // Pylon image as profile picture
-        ImageView pylonImage = new ImageView(new Image("file:src/main/java/pinpoint/pylon.jpg"));
-        pylonImage.setFitWidth(110);
-        pylonImage.setFitHeight(110);
+        ImageView pylonImage = new ImageView(new Image("/images/pylon.jpg"));
+        pylonImage.setFitWidth(295);
+        pylonImage.setFitHeight(115);
         pylonImage.setPreserveRatio(false);
         pylonImage.setSmooth(true);
-        pylonImage.setClip(null); // No circle clip, full rectangle
+        pylonImage.setClip(null);
 
         profileContainer.getChildren().addAll(borderRect, pylonImage);
 
