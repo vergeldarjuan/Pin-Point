@@ -13,7 +13,7 @@ public class PinPointLogo {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("PIN*point");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 800);
+            frame.setSize(375, 667);
             frame.setLocationRelativeTo(null);
 
             LogoPanel logoPanel = new LogoPanel();
