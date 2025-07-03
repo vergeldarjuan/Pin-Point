@@ -99,8 +99,8 @@ public class Map extends Application {
         centerSection.setAlignment(Pos.CENTER);
 
         ImageView floorImageView = new ImageView();
-        floorImageView.setFitWidth(250);
-        floorImageView.setFitHeight(250);
+        floorImageView.setFitWidth(380);
+        floorImageView.setFitHeight(380);
         floorImageView.setPreserveRatio(true);
 
         // Try to load the image, if it fails, create a placeholder
