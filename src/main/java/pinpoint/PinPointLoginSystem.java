@@ -1,5 +1,9 @@
 package pinpoint;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.*;
+import java.lang.reflect.Type;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -48,6 +52,7 @@ public class PinPointLoginSystem extends Application {
         primaryStage.setTitle("PIN*Point");
         primaryStage.setResizable(false);
 
+        loadUsersFromJson(); // Load users from JSON on startup
         showLoginScene();
     }
 
@@ -385,6 +390,33 @@ public class PinPointLoginSystem extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void saveUsersToJson() {
+        try (Writer writer = new FileWriter("src/main/java/pinpoint/Information.JSON")) {
+            Gson gson = new Gson();
+            gson.toJson(users, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadUsersFromJson() {
+        try (Reader reader = new FileReader("src/main/java/pinpoint/Information.JSON")) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<Map<String, User>>() {
+            }.getType();
+            users = gson.fromJson(reader, type);
+            if (users == null)
+                users = new HashMap<>();
+        } catch (IOException e) {
+            users = new HashMap<>(); // If file not found or error, start fresh
+        }
+    }
+
+    @Override
+    public void stop() {
+        saveUsersToJson();
     }
 
     public static void main(String[] args) {

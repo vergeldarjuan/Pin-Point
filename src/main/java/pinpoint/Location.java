@@ -17,6 +17,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Location extends Application {
+    private PinPointLoginSystem.User userData;
+
+    public Location(PinPointLoginSystem.User userData) {
+        this.userData = userData;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -221,18 +226,21 @@ public class Location extends Application {
             profileIconSVG.setFill(Color.WHITE); // Profile white
             // Switch to Map
             try {
-                new Map().start(primaryStage);
+                new Map(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
 
+        // Profile button
         profileButton.setOnAction(e -> {
-            homeIconSVG.setFill(Color.WHITE);
-            mapIconSVG.setFill(Color.WHITE);
-            profileIconSVG.setFill(Color.web("#FFD700"));
+            homeIconSVG.setFill(Color.WHITE); // Home white
+            mapIconSVG.setFill(Color.WHITE); // Map white
+            profileIconSVG.setFill(Color.web("#FFD700")); // Profile yellow
+
+            // Switch to UserProfile
             try {
-                new User(null).start(primaryStage); // This will redirect to User.java
+                new User(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

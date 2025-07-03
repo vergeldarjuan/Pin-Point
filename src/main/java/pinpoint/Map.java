@@ -17,6 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Map extends Application {
+    private PinPointLoginSystem.User userData;
+
+    public Map(PinPointLoginSystem.User userData) {
+        this.userData = userData;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -178,7 +183,7 @@ public class Map extends Application {
 
             // Switch to LocationPage
             try {
-                new Location().start(primaryStage);
+                new Location(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -199,7 +204,7 @@ public class Map extends Application {
 
             // Switch to UserProfile
             try {
-                new User(null).start(primaryStage); // This will redirect to User.java
+                new User(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

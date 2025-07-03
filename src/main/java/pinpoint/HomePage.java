@@ -147,7 +147,6 @@ public class HomePage extends Application {
             homeIconSVG.setFill(Color.web("#FFD700")); // Home yellow
             mapIconSVG.setFill(Color.WHITE); // Map white
             profileIconSVG.setFill(Color.WHITE); // Profile white
-            // Already on HomePage, so no navigation needed
         });
 
         // Location Button
@@ -158,7 +157,7 @@ public class HomePage extends Application {
 
             // Switch to LocationPage
             try {
-                new Location().start(primaryStage);
+                new Location(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -171,7 +170,7 @@ public class HomePage extends Application {
             profileIconSVG.setFill(Color.WHITE); // Profile white
             // Switch to Map page
             try {
-                new Map().start(primaryStage);
+                new Map(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -185,7 +184,7 @@ public class HomePage extends Application {
 
             // Switch to UserProfile
             try {
-                new pinpoint.User(userData).start(primaryStage);
+                new User(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

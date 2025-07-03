@@ -295,7 +295,7 @@ public class User extends Application {
             profileSVG.setFill(Color.WHITE);
             starSVG.setFill(Color.WHITE);
             try {
-                new Map().start(primaryStage);
+                new Map(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -315,7 +315,7 @@ public class User extends Application {
             profileSVG.setFill(Color.WHITE);
             starSVG.setFill(Color.web("#FFD700"));
             try {
-                new Location().start(primaryStage);
+                new Location(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
