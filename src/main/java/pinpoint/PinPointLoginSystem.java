@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -137,6 +138,7 @@ public class PinPointLoginSystem extends Application {
         signUpBtn.setPrefHeight(50);
         signUpBtn.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white; " +
                 "-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 25;");
+        signUpBtn.setCursor(Cursor.HAND);
 
         // Already have account
         HBox accountBox = new HBox(5);
@@ -223,6 +225,7 @@ public class PinPointLoginSystem extends Application {
         signInBtn.setPrefHeight(40);
         signInBtn.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         signInBtn.setStyle("-fx-background-color: #800000; -fx-text-fill: white; -fx-background-radius: 20;");
+        signInBtn.setCursor(Cursor.HAND);
 
         // Don't have account
         HBox accountBox = new HBox(5);
