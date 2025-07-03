@@ -105,7 +105,7 @@ public class Map extends Application {
 
         // Try to load the image, if it fails, create a placeholder
         try {
-            floorImageView.setImage(new Image(getClass().getResourceAsStream("/images/f1.jpg")));
+            floorImageView.setImage(new Image(getClass().getResourceAsStream("/images/f1.png")));
         } catch (Exception e) {
             // Create a placeholder rectangle if image doesn't exist
             javafx.scene.shape.Rectangle placeholder = new javafx.scene.shape.Rectangle(250, 250);
@@ -121,7 +121,7 @@ public class Map extends Application {
 
         floorSelector.setOnAction(e -> {
             int selectedIndex = floorSelector.getSelectionModel().getSelectedIndex() + 1;
-            String imagePath = "/images/f" + selectedIndex + ".jpg";
+            String imagePath = "/images/f" + selectedIndex + ".png";
             try {
                 Image img = new Image(getClass().getResourceAsStream(imagePath));
                 floorImageView.setImage(img);
