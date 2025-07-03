@@ -21,10 +21,15 @@ public class PinPointLogo {
             frame.setVisible(true);
 
             // Start transition after 2 seconds
-            new Timer(2000, e -> logoPanel.startTransition(() -> {
-                frame.dispose();
-                new pinpoint.PinPointLoginSystem();
-            })).start();
+            Timer delayTimer = new Timer(100, null);
+            delayTimer.setRepeats(false);
+            delayTimer.addActionListener(e -> {
+                new Timer(2000, evt -> logoPanel.startTransition(() -> {
+                    frame.dispose();
+                    AppLauncher.launchApp();
+                })).start();
+            });
+            delayTimer.start();
         });
     }
 
