@@ -89,14 +89,14 @@ public class Map extends Application {
         floorImageView.setPreserveRatio(true);
 
         // Set initial image
-        floorImageView.setImage(new Image(getClass().getResourceAsStream("/images/f1.png")));
+        floorImageView.setImage(new Image(getClass().getResourceAsStream("/images/f1.jpg")));
 
         centerSection.getChildren().add(floorImageView);
 
         // Listen for floor selection changes
         floorSelector.setOnAction(e -> {
             int selectedIndex = floorSelector.getSelectionModel().getSelectedIndex() + 1;
-            String imagePath = "/images/f" + selectedIndex + ".png";
+            String imagePath = "/images/f" + selectedIndex + ".jpg";
             Image img = new Image(getClass().getResourceAsStream(imagePath));
             floorImageView.setImage(img);
         });

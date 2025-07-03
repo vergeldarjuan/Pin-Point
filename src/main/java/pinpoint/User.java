@@ -6,9 +6,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -49,48 +52,29 @@ public class User extends Application {
         profileSection.setAlignment(Pos.CENTER);
         profileSection.setSpacing(10);
 
-        // Profile picture container with star
+        // Rectangle profile area with pylon.jpg
         StackPane profileContainer = new StackPane();
         profileContainer.setPrefSize(120, 120);
 
-        // Outer circle (light gray border)
-        Circle outerCircle = new Circle(60);
-        outerCircle.setFill(Color.TRANSPARENT);
-        outerCircle.setStroke(Color.web("#E0E0E0"));
-        outerCircle.setStrokeWidth(3);
+        // Rectangle border
+        Rectangle borderRect = new Rectangle(120, 120);
+        borderRect.setArcWidth(20);
+        borderRect.setArcHeight(20);
+        borderRect.setFill(Color.TRANSPARENT);
+        borderRect.setStroke(Color.web("#E0E0E0"));
+        borderRect.setStrokeWidth(3);
 
-        // Inner area
-        Circle innerCircle = new Circle(55);
-        innerCircle.setFill(Color.WHITE);
+        // Pylon image as profile picture
+        ImageView pylonImage = new ImageView(new Image("file:src/main/java/pinpoint/pylon.jpg"));
+        pylonImage.setFitWidth(110);
+        pylonImage.setFitHeight(110);
+        pylonImage.setPreserveRatio(false);
+        pylonImage.setSmooth(true);
+        pylonImage.setClip(null); // No circle clip, full rectangle
 
-        // Golden star in center
-        SVGPath starIcon = new SVGPath();
-        starIcon.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
-        starIcon.setFill(Color.web("#FFD700"));
-        starIcon.setScaleX(2);
-        starIcon.setScaleY(2);
+        profileContainer.getChildren().addAll(borderRect, pylonImage);
 
-        profileContainer.getChildren().addAll(outerCircle, innerCircle, starIcon);
-
-        // Camera icon (small red square in bottom right)
-        StackPane cameraIcon = new StackPane();
-        cameraIcon.setPrefSize(25, 25);
-        cameraIcon.setStyle("-fx-background-color: #800000; -fx-background-radius: 4;");
-
-        SVGPath cameraPath = new SVGPath();
-        cameraPath.setContent(
-                "M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z");
-        cameraPath.setFill(Color.WHITE);
-        cameraPath.setScaleX(0.6);
-        cameraPath.setScaleY(0.6);
-
-        cameraIcon.getChildren().add(cameraPath);
-
-        StackPane profileWithCamera = new StackPane();
-        profileWithCamera.getChildren().addAll(profileContainer, cameraIcon);
-        StackPane.setAlignment(cameraIcon, Pos.BOTTOM_RIGHT);
-
-        profileSection.getChildren().add(profileWithCamera);
+        profileSection.getChildren().add(profileContainer);
 
         // Form fields (with references for editing)
         TextField[] nameField = new TextField[1];
