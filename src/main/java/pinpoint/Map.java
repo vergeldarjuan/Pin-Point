@@ -121,7 +121,7 @@ public class Map extends Application {
 
         floorSelector.setOnAction(e -> {
             int selectedIndex = floorSelector.getSelectionModel().getSelectedIndex() + 1;
-            String imagePath = "/images/f" + selectedIndex + ".png";
+            String imagePath = "/images/f" + selectedIndex + "png";
             try {
                 Image img = new Image(getClass().getResourceAsStream(imagePath));
                 floorImageView.setImage(img);
