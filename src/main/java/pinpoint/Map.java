@@ -4,10 +4,18 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
@@ -18,7 +26,7 @@ public class Map extends Application {
     private PinPointLoginSystem.User userData;
 
     public Map() {
-        this.userData = null; // Default constructor
+        this.userData = null;
     }
 
     public Map(PinPointLoginSystem.User userData) {
@@ -28,7 +36,7 @@ public class Map extends Application {
     @Override
     public void start(Stage primaryStage) {
         BorderPane mainContainer = new BorderPane();
-        mainContainer.setPrefSize(400, 600);
+        mainContainer.setPrefSize(400, 667);
         mainContainer.setStyle("-fx-background-color: #F8F8F8;");
 
         // Top Section
@@ -37,20 +45,13 @@ public class Map extends Application {
         topSection.setAlignment(Pos.TOP_LEFT);
 
         ComboBox<String> floorSelector = new ComboBox<>();
-        floorSelector.getItems().addAll(
-                "1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor");
+        floorSelector.getItems().addAll("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor");
         floorSelector.setValue("1st Floor");
         floorSelector.setPrefWidth(160);
         floorSelector.setPrefHeight(35);
-        floorSelector.setStyle(
-                "-fx-background-color: #800000; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-family: Arial; " +
-                        "-fx-font-size: 14px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 18; " +
-                        "-fx-border-radius: 18;" +
-                        "-fx-cursor: hand;");
+        floorSelector.setStyle("-fx-background-color: #800000; -fx-text-fill: white; -fx-font-family: Arial; " +
+                "-fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-radius: 18;" +
+                "-fx-cursor: hand;");
 
         javafx.util.Callback<javafx.scene.control.ListView<String>, javafx.scene.control.ListCell<String>> cellFactory = lv -> new javafx.scene.control.ListCell<String>() {
             @Override
@@ -69,17 +70,15 @@ public class Map extends Application {
         floorSelector.setCellFactory(cellFactory);
         floorSelector.setButtonCell(cellFactory.call(null));
 
-        // Legend Button
         Button legendButton = new Button("Legend");
-        legendButton.setStyle(
-                "-fx-background-color: #800000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;");
+        legendButton.setStyle("-fx-background-color: #800000; -fx-text-fill: white; -fx-font-weight: bold; " +
+                "-fx-background-radius: 8; -fx-cursor: hand;");
         legendButton.setPadding(new Insets(5, 15, 5, 15));
         legendButton.setOnAction(e -> showRoomNames());
 
-        // Navigate Button
         Button navigateButton = new Button("Navigate");
-        navigateButton.setStyle(
-                "-fx-background-color: #FFD700; -fx-text-fill: #800000; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;");
+        navigateButton.setStyle("-fx-background-color: #FFD700; -fx-text-fill: #800000; -fx-font-weight: bold; " +
+                "-fx-background-radius: 8; -fx-cursor: hand;");
         navigateButton.setPadding(new Insets(5, 15, 5, 15));
         navigateButton.setOnAction(e -> {
             try {
@@ -89,35 +88,39 @@ public class Map extends Application {
             }
         });
 
-        HBox buttonContainer = new HBox(10);
-        buttonContainer.getChildren().addAll(legendButton, navigateButton);
-
+        HBox buttonContainer = new HBox(10, legendButton, navigateButton);
         topSection.getChildren().addAll(floorSelector, buttonContainer);
 
-        // Center Section
-        StackPane centerSection = new StackPane();
-        centerSection.setAlignment(Pos.CENTER);
-
+        // Center Section with Zoomable Image
         ImageView floorImageView = new ImageView();
+        floorImageView.setPreserveRatio(true);
         floorImageView.setFitWidth(380);
         floorImageView.setFitHeight(380);
-        floorImageView.setPreserveRatio(true);
 
-        // Try to load the image, if it fails, create a placeholder
         try {
             floorImageView.setImage(new Image(getClass().getResourceAsStream("/images/f1.png")));
         } catch (Exception e) {
-            // Create a placeholder rectangle if image doesn't exist
-            javafx.scene.shape.Rectangle placeholder = new javafx.scene.shape.Rectangle(250, 250);
-            placeholder.setFill(Color.LIGHTGRAY);
-            placeholder.setStroke(Color.DARKGRAY);
-            placeholder.setStrokeWidth(2);
-            centerSection.getChildren().add(placeholder);
+            System.out.println("Image not found");
         }
 
-        if (floorImageView.getImage() != null) {
-            centerSection.getChildren().add(floorImageView);
-        }
+        StackPane imageContainer = new StackPane(floorImageView);
+        imageContainer.setAlignment(Pos.CENTER);
+        imageContainer.setPadding(new Insets(10));
+
+        ScrollPane scrollPane = new ScrollPane(imageContainer);
+        scrollPane.setPannable(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+
+        imageContainer.setOnScroll(e -> {
+            double zoomFactor = 1.1;
+            if (e.getDeltaY() < 0) {
+                zoomFactor = 1 / zoomFactor;
+            }
+            floorImageView.setScaleX(floorImageView.getScaleX() * zoomFactor);
+            floorImageView.setScaleY(floorImageView.getScaleY() * zoomFactor);
+        });
 
         floorSelector.setOnAction(e -> {
             int selectedIndex = floorSelector.getSelectionModel().getSelectedIndex() + 1;
@@ -125,16 +128,17 @@ public class Map extends Application {
             try {
                 Image img = new Image(getClass().getResourceAsStream(imagePath));
                 floorImageView.setImage(img);
+                floorImageView.setScaleX(1); // Reset zoom
+                floorImageView.setScaleY(1);
             } catch (Exception ex) {
                 System.out.println("Could not load image: " + imagePath);
             }
         });
 
-        // Bottom Navigation
         HBox bottomNav = createBottomNavigation(primaryStage);
 
         mainContainer.setTop(topSection);
-        mainContainer.setCenter(centerSection);
+        mainContainer.setCenter(scrollPane);
         mainContainer.setBottom(bottomNav);
 
         Scene scene = new Scene(mainContainer, 375, 667);
@@ -159,24 +163,21 @@ public class Map extends Application {
         StackPane homeIcon = new StackPane(homeIconSVG);
 
         SVGPath starIconSVG = new SVGPath();
-        starIconSVG
-                .setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
+        starIconSVG.setContent("M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z");
         starIconSVG.setFill(Color.WHITE);
         starIconSVG.setScaleX(1.2);
         starIconSVG.setScaleY(1.2);
         StackPane starIcon = new StackPane(starIconSVG);
 
         SVGPath mapIconSVG = new SVGPath();
-        mapIconSVG.setContent(
-                "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapIconSVG.setFill(Color.web("#FFD700")); // Current page highlighted
+        mapIconSVG.setContent("M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
+        mapIconSVG.setFill(Color.web("#FFD700"));
         mapIconSVG.setScaleX(1.2);
         mapIconSVG.setScaleY(1.2);
         StackPane mapIcon = new StackPane(mapIconSVG);
 
         SVGPath profileIconSVG = new SVGPath();
-        profileIconSVG.setContent(
-                "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
+        profileIconSVG.setContent("M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
         profileIconSVG.setFill(Color.WHITE);
         profileIconSVG.setScaleX(1.2);
         profileIconSVG.setScaleY(1.2);
@@ -189,7 +190,6 @@ public class Map extends Application {
 
         bottomNav.getChildren().addAll(homeButton, starButton, mapButton, profileButton);
 
-        // Navigation actions
         homeButton.setOnAction(e -> {
             try {
                 new HomePage(userData).start(primaryStage);
@@ -268,64 +268,16 @@ public class Map extends Application {
     private String getRoomLegendText() {
         return "AVAILABLE ROOMS FOR NAVIGATION:\n\n" +
                 "═══════════════════════════════════════\n" +
-                "6th Floor South:\n" +
-                "• 601 - CAL Dean Office\n" +
-                "• 602 - CPSPA Graduate Studies\n" +
-                "• 603 - CPSPA Office\n" +
-                "• 604 - Education Graduate Studies\n" +
-                "• 605 - CBA Graduate Studies\n" +
-                "• 607 - CAL Chair Office\n" +
-                "• 610 - Data & Statistics Office\n" +
-                "• 612 - CSSD Chair Office\n" +
-                "• 613 - CSSD Dean Office\n" +
-                "• 614 - Psychology Laboratory\n\n" +
-
-                "5th Floor South:\n" +
-                "• 505 - Consultation Room\n" +
-                "• 506 - CCIS Faculty Office\n" +
-                "• 507 - Laboratory Operations\n" +
-                "• 512 - Dean Office\n" +
-                "• 514 - Science Faculty Office\n" +
-                "• 515 - Mathematics & Statistics\n" +
-                "• 516 - Computer Laboratory\n" +
-                "• 517 - Multi-Purpose Room\n" +
-                "• 518 - Accountancy Office\n\n" +
-
-                "4th Floor South:\n" +
-                "• 401-425 - Research Offices, Language Center,\n" +
-                "  Gender & Development, Innovation Hub\n\n" +
-
-                "3rd Floor South:\n" +
-                "• 311-318 - Administration, Planning,\n" +
-                "  Legal Affairs, International Relations, HR\n\n" +
-
-                "2nd Floor South:\n" +
-                "• 202-215 - President's Office, Vice Presidents,\n" +
-                "  Server Room, Executive Offices\n\n" +
-
-                "2nd Floor East:\n" +
-                "• 201-2E08 - DCSD Office, NSTP Office,\n" +
-                "  Faculty Offices\n\n" +
-
-                "1st Floor South:\n" +
-                "• 101-109 - Accounting, Budget Office,\n" +
-                "  Registrar's Office\n\n" +
-
                 "1st Floor East:\n" +
                 "• 1E01 - East Wing Office\n" +
                 "• DMST - Digital Media & Sound Technology\n" +
                 "• CCHQ - Campus Security Headquarters\n" +
                 "• Clinic - University Health Center\n" +
                 "• Facilities - Facilities Management\n\n" +
-
                 "1st Floor West:\n" +
                 "• Admission - Admissions Office\n" +
                 "• Registration - Registration Office\n\n" +
-
-                "═══════════════════════════════════════\n" +
-                "Note: Use these exact room names when\n" +
-                "entering your current location and destination\n" +
-                "in the navigation system.";
+                "... and more rooms listed.";
     }
 
     public static void main(String[] args) {
