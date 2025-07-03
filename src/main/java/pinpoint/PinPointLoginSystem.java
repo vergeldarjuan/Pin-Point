@@ -364,9 +364,9 @@ public class PinPointLoginSystem extends Application {
             return;
         }
 
-        // Successful login - redirect to User page with user data
+        // Successful login - redirect to Home page with user data
         try {
-            new pinpoint.User(user).start(primaryStage);
+            new pinpoint.HomePage(user).start(primaryStage);
         } catch (Exception ex) {
             ex.printStackTrace();
             showAlert("Error", "Failed to load User Page.");
