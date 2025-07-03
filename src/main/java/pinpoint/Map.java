@@ -169,7 +169,7 @@ public class Map extends Application {
 
             // Switch to HomePage
             try {
-                new HomePage(null).start(primaryStage);
+                new HomePage(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

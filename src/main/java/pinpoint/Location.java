@@ -103,6 +103,14 @@ public class Location extends Application {
         HBox startButtonContainer = new HBox();
         startButtonContainer.setAlignment(Pos.CENTER);
         startButtonContainer.getChildren().add(startButton);
+        startButton.setOnAction(e -> {
+            // Switch to Map
+            try {
+                new GeneratedPath().start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         // Add some spacing before the bottom section
         Region spacer = new Region();
@@ -214,7 +222,7 @@ public class Location extends Application {
             profileIconSVG.setFill(Color.WHITE); // Profile white
             // Switch to HomePage
             try {
-                new HomePage(null).start(primaryStage);
+                new HomePage(userData).start(primaryStage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -254,15 +262,6 @@ public class Location extends Application {
         primaryStage.setTitle("Location");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private VBox createNavIcon(Region icon, boolean isSelected) {
-        VBox navItem = new VBox();
-        navItem.setAlignment(Pos.CENTER);
-        navItem.setSpacing(5);
-        navItem.getChildren().add(icon);
-
-        return navItem;
     }
 
     private Region createMapLocationIcon() {
