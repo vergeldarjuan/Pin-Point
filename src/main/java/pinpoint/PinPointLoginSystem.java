@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 public class PinPointLoginSystem extends Application {
 
-    // In-memory user storage (in real app, use database)
     private Map<String, User> users = new HashMap<>();
     private Stage primaryStage;
 
@@ -53,7 +52,7 @@ public class PinPointLoginSystem extends Application {
         primaryStage.setTitle("PIN*Point");
         primaryStage.setResizable(false);
 
-        loadUsersFromJson(); // Load users from JSON on startup
+        loadUsersFromJson();
         showLoginScene();
     }
 

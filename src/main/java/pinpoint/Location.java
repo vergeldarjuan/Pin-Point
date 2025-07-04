@@ -72,7 +72,7 @@ public class Location extends Application {
                         "-fx-background-radius: 8; " +
                         "-fx-font-size: 14px; " +
                         "-fx-cursor: hand;");
-        currentLocationCombo.setEditable(false); // FIX: Only allow selection from list
+        currentLocationCombo.setEditable(false);
 
         currentLocationSection.getChildren().addAll(currentLocationLabel, currentLocationCombo);
 
@@ -96,7 +96,7 @@ public class Location extends Application {
                         "-fx-background-radius: 8; " +
                         "-fx-font-size: 14px; " +
                         "-fx-cursor: hand;");
-        destinationCombo.setEditable(false); // FIX: Only allow selection from list
+        destinationCombo.setEditable(false);
 
         destinationSection.getChildren().addAll(destinationLabel, destinationCombo);
 
@@ -143,7 +143,6 @@ public class Location extends Application {
                         "Dijkstra's Algorithm: Explores all possible paths systematically. Guarantees shortest path but may be slower.");
             }
         });
-        // FIX: Set initial description after setting default value
         algorithmCombo.getOnAction().handle(null);
 
         // Start Button
@@ -205,7 +204,6 @@ public class Location extends Application {
         String destination = destinationCombo.getValue();
         String algorithm = algorithmCombo.getValue();
 
-        // Validate inputs
         if (currentLocation == null || currentLocation.trim().isEmpty()) {
             showAlert("Error", "Please select your current location.");
             return;
@@ -221,7 +219,6 @@ public class Location extends Application {
             return;
         }
 
-        // Check if the locations exist in the building graph
         if (buildingGraph.getNode(currentLocation) == null) {
             showAlert("Error", "Current location '" + currentLocation + "' not found in the building.");
             return;

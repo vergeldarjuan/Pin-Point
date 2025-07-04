@@ -34,9 +34,9 @@ public class PinPointLogo {
     }
 
     static class LogoPanel extends JPanel {
-        private Color currentBg = new Color(0xFAF3E0); // Start: cream
-        private Color targetBg = new Color(0x800000); // End: maroon
-        private float progress = 0.0f; // animation progress
+        private Color currentBg = new Color(0xFAF3E0);
+        private Color targetBg = new Color(0x800000);
+        private float progress = 0.0f;
         private Timer fadeTimer;
         private Runnable onComplete;
 
@@ -83,7 +83,6 @@ public class PinPointLogo {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Interpolate background color
             int r = (int) (currentBg.getRed() * (1 - progress) + targetBg.getRed() * progress);
             int gCol = (int) (currentBg.getGreen() * (1 - progress) + targetBg.getGreen() * progress);
             int b = (int) (currentBg.getBlue() * (1 - progress) + targetBg.getBlue() * progress);
@@ -92,7 +91,6 @@ public class PinPointLogo {
             g2.setColor(blendedBg);
             g2.fillRect(0, 0, getWidth(), getHeight());
 
-            // Decide text color based on progress
             Color textColor = progress >= 0.5f ? Color.WHITE : new Color(0x800000);
             Color starColor = progress >= 0.5f ? new Color(0xFFD700) : new Color(0x800000);
 

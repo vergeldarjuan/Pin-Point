@@ -161,8 +161,7 @@ public class User extends Application {
         buttonRow.setAlignment(Pos.CENTER);
         buttonRow.getChildren().setAll(editButton, logOutButton);
 
-        // Add buttonRow to formSection (remove/add any previous
-        // editButton/logOutButtonContainer)
+        // Add buttonRow to formSection
         formSection.getChildren().add(buttonRow);
 
         // Add logout confirmation
@@ -232,7 +231,7 @@ public class User extends Application {
         SVGPath profileSVG = new SVGPath();
         profileSVG.setContent(
                 "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
-        profileSVG.setFill(Color.web("#FFD700")); // Profile selected by default
+        profileSVG.setFill(Color.web("#FFD700"));
         profileSVG.setScaleX(1.2);
         profileSVG.setScaleY(1.2);
 
@@ -290,7 +289,6 @@ public class User extends Application {
             mapSVG.setFill(Color.WHITE);
             profileSVG.setFill(Color.web("#FFD700"));
             starSVG.setFill(Color.WHITE);
-            // Already on Profile/User page
         });
 
         starButton.setOnAction(e -> {
@@ -315,29 +313,6 @@ public class User extends Application {
         primaryStage.show();
     }
 
-    private VBox createFormField(String labelText) {
-        VBox fieldContainer = new VBox();
-        fieldContainer.setSpacing(5);
-
-        Label label = new Label(labelText);
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        label.setTextFill(Color.web("#333333"));
-
-        TextField textField = new TextField();
-        textField.setPrefHeight(40);
-        textField.setStyle(
-                "-fx-background-color: white; " +
-                        "-fx-border-color: #800000; " +
-                        "-fx-border-width: 1.5; " +
-                        "-fx-border-radius: 8; " +
-                        "-fx-background-radius: 8; " +
-                        "-fx-padding: 10; " +
-                        "-fx-font-size: 14px;");
-
-        fieldContainer.getChildren().addAll(label, textField);
-        return fieldContainer;
-    }
-
     private VBox createFormField(String labelText, String value, boolean editable, TextField[] fieldRef) {
         VBox fieldContainer = new VBox();
         fieldContainer.setSpacing(5);
@@ -359,7 +334,7 @@ public class User extends Application {
         textField.setEditable(editable);
 
         if (fieldRef != null && fieldRef.length > 0) {
-            fieldRef[0] = textField; // Pass reference for later editing
+            fieldRef[0] = textField;
         }
 
         fieldContainer.getChildren().addAll(label, textField);

@@ -37,11 +37,11 @@ public class HomePage extends Application {
                         "-fx-background-position: center center;" +
                         "-fx-background-repeat: no-repeat;");
 
-        // Subtitle section (separate from headerSection)
+        // Subtitle section
         VBox subtitleContainer = new VBox();
         subtitleContainer.setAlignment(Pos.CENTER);
         subtitleContainer.setPadding(new Insets(10, 20, 10, 20));
-        subtitleContainer.setStyle("-fx-background-color: white;"); // Add this line
+        subtitleContainer.setStyle("-fx-background-color: white;");
 
         Text exploreText = new Text("Explore PUP with ease — ");
         exploreText.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
@@ -73,7 +73,7 @@ public class HomePage extends Application {
         guideTitle.setFont(Font.font("Poppins", FontWeight.BOLD, 24));
         guideTitle.setTextFill(Color.web("#800000"));
         guideTitle.setAlignment(Pos.CENTER);
-        guideTitle.setMaxWidth(Double.MAX_VALUE); // Make it fill the width
+        guideTitle.setMaxWidth(Double.MAX_VALUE);
         guideTitle.setStyle("-fx-background-color: #FFDF00;");
         guideTitle.setPadding(new Insets(5, 0, 5, 0));
 
@@ -95,10 +95,10 @@ public class HomePage extends Application {
         bottomNav.setAlignment(Pos.CENTER);
         bottomNav.setSpacing(60);
 
-        // Create navigation icons (keep references to SVGPath for color changes)
+        // Create navigation icons
         SVGPath homeIconSVG = new SVGPath();
         homeIconSVG.setContent("M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z");
-        homeIconSVG.setFill(Color.web("#FFD700")); // Home is yellow by default
+        homeIconSVG.setFill(Color.web("#FFD700"));
         homeIconSVG.setScaleX(1.5);
         homeIconSVG.setScaleY(1.5);
         StackPane homeIcon = new StackPane(homeIconSVG);
@@ -107,7 +107,7 @@ public class HomePage extends Application {
         SVGPath mapIconSVG = new SVGPath();
         mapIconSVG.setContent(
                 "M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z");
-        mapIconSVG.setFill(Color.WHITE); // Map is white by default
+        mapIconSVG.setFill(Color.WHITE);
         mapIconSVG.setScaleX(1.2);
         mapIconSVG.setScaleY(1.2);
         StackPane mapIcon = new StackPane(mapIconSVG);
@@ -116,7 +116,7 @@ public class HomePage extends Application {
         SVGPath profileIconSVG = new SVGPath();
         profileIconSVG.setContent(
                 "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z");
-        profileIconSVG.setFill(Color.WHITE); // Profile is white by default
+        profileIconSVG.setFill(Color.WHITE);
         profileIconSVG.setScaleX(1.2);
         profileIconSVG.setScaleY(1.2);
         StackPane profileIcon = new StackPane(profileIconSVG);

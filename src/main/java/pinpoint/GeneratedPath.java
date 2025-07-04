@@ -123,14 +123,13 @@ public class GeneratedPath extends Application {
             pathVisual.setArcHeight(10);
             pathVisual.setArcWidth(10);
 
-            // --- Travel Time Calculation ---
             // Get total distance and validate
-            double totalDistance = pathResult.getTotalDistance(); // assume meters
+            double totalDistance = pathResult.getTotalDistance();
             if (totalDistance <= 0) {
                 // Handle invalid distance case
                 Label errorLabel = new Label("Unable to calculate travel time: Invalid path distance");
                 errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-                errorLabel.setTextFill(Color.web("#D32F2F")); // Red color for error
+                errorLabel.setTextFill(Color.web("#D32F2F"));
 
                 StackPane pathVisualization = new StackPane(pathVisual, errorLabel);
                 pathSummary.getChildren().addAll(fromLabel, toLabel, algorithmLabel,
@@ -152,7 +151,6 @@ public class GeneratedPath extends Application {
             travelTimeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
             travelTimeLabel.setTextFill(Color.web("#1976D2"));
 
-            // Center travel time label in the blue box
             StackPane pathVisualization = new StackPane(pathVisual, travelTimeLabel);
 
             pathSummary.getChildren().addAll(fromLabel, toLabel, algorithmLabel,
@@ -232,7 +230,6 @@ public class GeneratedPath extends Application {
 
                 stepInfo.getChildren().addAll(roomLabel, floorLabel);
 
-                // Add arrow for non-last steps
                 if (i < pathResult.getPath().size() - 1) {
                     Label arrow = new Label("↓");
                     arrow.setFont(Font.font("Arial", FontWeight.BOLD, 16));
