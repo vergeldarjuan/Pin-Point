@@ -539,7 +539,6 @@ public class Algos {
             connectFloors("S101", "E101", 5.0);
             connectFloors("S101", "AARS", 5.0);
             connectFloors("S201", "E201", 5.0);
-            // ...add more as needed for your building's real connections...
         }
 
         private void connectAdjacentRooms(String floor, String[] roomNames) {
@@ -633,7 +632,6 @@ public class Algos {
         }
 
         private static double heuristic(Node a, Node b) {
-            // Manhattan distance + floor difference penalty
             double floorDiff = Math.abs(getFloorNumber(a.floor) - getFloorNumber(b.floor)) * 10;
             return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + floorDiff;
         }
@@ -799,7 +797,6 @@ public class Algos {
         }
     }
 
-    // Main pathfinding method
     public static PathResult findOptimalPath(String startRoom, String goalRoom, String algorithm) {
         BuildingGraph graph = new BuildingGraph();
         Node start = graph.getNode(startRoom);
@@ -820,7 +817,6 @@ public class Algos {
                 path = Dijkstra.findPath(start, goal);
                 break;
             default:
-                // Unknown algorithm, return empty result
                 return new PathResult(new ArrayList<>(), algorithm, 0, 0);
         }
 
