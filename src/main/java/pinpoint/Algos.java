@@ -514,21 +514,43 @@ public class Algos {
                     new String[] { "Stairs_6W", "W601", "W603", "W605", "W607", "W609", "W611", "W613", "W615", "W617",
                             "W619", "W602", "W604", "W606", "W608", "W610", "W612", "W614", "W616", "W618", "W620" });
 
-            // Connect stairs between floors (South)
+            // South Rooms
+            connectFloors("S101", "S201", 15.0);
+            connectFloors("S201", "S301", 15.0);
+            connectFloors("S301", "S401", 15.0);
+            connectFloors("S401", "S501", 15.0);
+            connectFloors("S501", "S601", 15.0);
+
+            // East Rooms
+            connectFloors("E101", "E201", 15.0);
+            connectFloors("E201", "E301", 15.0);
+            connectFloors("E301", "E401", 15.0);
+            connectFloors("E401", "E501", 15.0);
+            connectFloors("E501", "E601", 15.0);
+
+            // West Rooms
+            connectFloors("W101", "W201", 15.0);
+            connectFloors("AARS", "W201", 15.0);
+            connectFloors("W201", "W301", 15.0);
+            connectFloors("W301", "W401", 15.0);
+            connectFloors("W401", "W501", 15.0);
+            connectFloors("W501", "W601", 15.0);
+
+            // Stairs South
             connectFloors("Stairs_1S", "Stairs_2S", 15.0);
             connectFloors("Stairs_2S", "Stairs_3S", 15.0);
             connectFloors("Stairs_3S", "Stairs_4S", 15.0);
             connectFloors("Stairs_4S", "Stairs_5S", 15.0);
             connectFloors("Stairs_5S", "Stairs_6S", 15.0);
 
-            // Connect stairs between floors (East)
+            // Stairs East
             connectFloors("Stairs_1E", "Stairs_2E", 15.0);
             connectFloors("Stairs_2E", "Stairs_3E", 15.0);
             connectFloors("Stairs_3E", "Stairs_4E", 15.0);
             connectFloors("Stairs_4E", "Stairs_5E", 15.0);
             connectFloors("Stairs_5E", "Stairs_6E", 15.0);
 
-            // Connect stairs between floors (West)
+            // Stairs West
             connectFloors("Stairs_1W", "Stairs_2W", 15.0);
             connectFloors("Stairs_2W", "Stairs_3W", 15.0);
             connectFloors("Stairs_3W", "Stairs_4W", 15.0);
@@ -537,8 +559,30 @@ public class Algos {
 
             // Connect sections on the same floor (South/East/West)
             connectFloors("S101", "E101", 5.0);
-            connectFloors("S101", "AARS", 5.0);
             connectFloors("S201", "E201", 5.0);
+            connectFloors("S301", "E301", 5.0);
+            connectFloors("S401", "E401", 5.0);
+            connectFloors("S501", "E501", 5.0);
+            connectFloors("S601", "E601", 5.0);
+
+            connectFloors("S101", "AARS", 5.0);
+            connectFloors("S201", "W201", 5.0);
+            connectFloors("S301", "W301", 5.0);
+            connectFloors("S401", "W401", 5.0);
+            connectFloors("S501", "W501", 5.0);
+            connectFloors("S601", "W601", 5.0);
+
+            connectFloors("E101", "AARS", 5.0);
+            connectFloors("E201", "W201", 5.0);
+            connectFloors("E301", "W301", 5.0);
+            connectFloors("E401", "W401", 5.0);
+            connectFloors("E501", "W501", 5.0);
+            connectFloors("E601", "W601", 5.0);
+            connectFloors("W101", "AARS", 5.0);
+            connectFloors("W201", "W301", 5.0);
+            connectFloors("W301", "W401", 5.0);
+            connectFloors("W401", "W501", 5.0);
+            connectFloors("W501", "W601", 5.0);
         }
 
         private void connectAdjacentRooms(String floor, String[] roomNames) {
